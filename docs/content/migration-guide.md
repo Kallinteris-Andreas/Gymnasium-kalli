@@ -67,7 +67,7 @@ While some environments might use external random number generator, we recommend
 ```{eval-rst}
 In v26, :meth:`reset` takes two optional parameters and returns one value.
 This contrasts to v21 which takes no parameters and returns ``None``.
-The two parameters are ``seed`` for setting the random number generator and ``options`` which allows additional data to be passed to the environment on reset.
+The two parameters are ``seed`` for setting the random number generatorz and ``options`` which allows additional data to be passed to the environment on reset.
 For example, in classic control, the options parameter now allows users to modify the range of the state bound.
 See the original `PR <https://github.com/openai/gym/pull/2921>`_ for more details.
 
@@ -82,14 +82,14 @@ This will automatically update the :attr:`np_random` with the seed value.
 
 ```{eval-rst}
 In v21, the type definition of :meth:`step` is ``tuple[ObsType, SupportsFloat, bool, dict[str, Any]`` representing the next observation, the reward from the step, if the episode is done and additional info from the step.
-Due to reproductibility issues that will be expanded on in a blog post soon, we have changed the type definition to ``tuple[ObsType, SupportsFloat, bool, bool, dict[str, Any]]`` adding an extra boolean value.
+Due to reproducibility issues that will be expanded on in a blog post soon, we have changed the type definition to ``tuple[ObsType, SupportsFloat, bool, bool, dict[str, Any]]`` adding an extra boolean value.
 This extra bool corresponds to the older `done` now changed to `terminated` and `truncated`.
 These changes were introduced in Gym `v26 <https://github.com/openai/gym/releases/tag/0.26.0>`_ (turned off by default in `v25 <https://github.com/openai/gym/releases/tag/0.25.0>`_).
 
 For users wishing to update, in most cases, replacing ``done`` with ``terminated`` and ``truncated=False`` in :meth:`step` should address most issues.
 However, environments that have reasons for episode truncation rather than termination should read through the associated `PR <https://github.com/openai/gym/pull/2752>`_.
 For users looping through an environment, they should modify ``done = terminated or truncated`` as is show in the example code.
-For training libraries, the primary difference is to change ``done`` to ``terminated``, indicating whether bootstraping should or shouldn't happen.
+For training libraries, the primary difference is to change ``done`` to ``terminated``, indicating whether bootstrapping1 should or shouldn't happen.
 ```
 
 ## Environment Render
