@@ -7,11 +7,11 @@
     <meta property="og:title" content="Gymnasium Documentation" />
     <meta property="og:type" content="website" />
     <meta property="og:description" content="A standard API for reinforcement learning and a diverse set of reference environments (formerly Gym)" />
-    <meta property="og:url" content="https://gymnasium.farama.org/_modules/gymnasium/vector/utils/numpy_utils.html" /><meta property="og:image" content="https://gymnasium.farama.org/_static/img/gymnasium-github.png" /><meta name="twitter:card" content="summary_large_image"><link rel="index" title="Index" href="../../../../../genindex/" /><link rel="search" title="Search" href="../../../../../search/" />
-        <link rel="canonical" href="https://gymnasium.farama.org/_modules/gymnasium/vector/utils/numpy_utils.html" />
+    <meta property="og:url" content="https://gymnasium.farama.org/_modules/gymnasium/experimental/wrappers/atari_preprocessing.html" /><meta property="og:image" content="https://gymnasium.farama.org/_static/img/gymnasium-github.png" /><meta name="twitter:card" content="summary_large_image"><link rel="index" title="Index" href="../../../../../genindex/" /><link rel="search" title="Search" href="../../../../../search/" />
+        <link rel="canonical" href="https://gymnasium.farama.org/_modules/gymnasium/experimental/wrappers/atari_preprocessing.html" />
 
     <link rel="shortcut icon" href="../../../../../_static/favicon.png"/><!-- Generated with Sphinx 7.0.1 and Furo 2023.05.20.dev1 -->
-        <title>gymnasium.vector.utils.numpy_utils - Gymnasium Documentation</title>
+        <title>gymnasium.experimental.wrappers.atari_preprocessing - Gymnasium Documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/styles/furo.css?digest=a022fd11c0d7e10ac71ac296890386cea7a2fa24" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery.css" />
@@ -476,153 +476,213 @@
           </div>
           <article role="main">
             
-            <h1>Source code for gymnasium.vector.utils.numpy_utils</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Numpy utility functions: concatenate space samples and create empty array.&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
-<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">singledispatch</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Union</span>
-
+            <h1>Source code for gymnasium.experimental.wrappers.atari_preprocessing</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Implementation of Atari 2600 Preprocessing following the guidelines of Machado et al., 2018.&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">gymnasium.spaces</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">Box</span><span class="p">,</span>
-    <span class="n">Dict</span><span class="p">,</span>
-    <span class="n">Discrete</span><span class="p">,</span>
-    <span class="n">MultiBinary</span><span class="p">,</span>
-    <span class="n">MultiDiscrete</span><span class="p">,</span>
-    <span class="n">Space</span><span class="p">,</span>
-    <span class="n">Tuple</span><span class="p">,</span>
-<span class="p">)</span>
+<span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
+<span class="kn">from</span> <span class="nn">gymnasium.spaces</span> <span class="kn">import</span> <span class="n">Box</span>
 
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;concatenate&quot;</span><span class="p">,</span> <span class="s2">&quot;create_empty_array&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;AtariPreprocessingV0&quot;</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="concatenate"><a class="viewcode-back" href="../../../../../api/spaces/vector_utils/#gymnasium.vector.utils.concatenate">[docs]</a><span class="nd">@singledispatch</span>
-<span class="k">def</span> <span class="nf">concatenate</span><span class="p">(</span>
-    <span class="n">space</span><span class="p">:</span> <span class="n">Space</span><span class="p">,</span> <span class="n">items</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">out</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Concatenate multiple samples from space into a single object.</span>
+<div class="viewcode-block" id="AtariPreprocessingV0"><a class="viewcode-back" href="../../../../../api/experimental/wrappers/#gymnasium.experimental.wrappers.AtariPreprocessingV0">[docs]</a><span class="k">class</span> <span class="nc">AtariPreprocessingV0</span><span class="p">(</span><span class="n">gym</span><span class="o">.</span><span class="n">Wrapper</span><span class="p">,</span> <span class="n">gym</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">RecordConstructorArgs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Atari 2600 preprocessing wrapper.</span>
 
-<span class="sd">    Args:</span>
-<span class="sd">        space: Observation space of a single environment in the vectorized environment.</span>
-<span class="sd">        items: Samples to be concatenated.</span>
-<span class="sd">        out: The output object. This object is a (possibly nested) numpy array.</span>
+<span class="sd">    This class follows the guidelines in Machado et al. (2018),</span>
+<span class="sd">    &quot;Revisiting the Arcade Learning Environment: Evaluation Protocols and Open Problems for General Agents&quot;.</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">        The output object. This object is a (possibly nested) numpy array.</span>
+<span class="sd">    Specifically, the following preprocess stages applies to the atari environment:</span>
 
-<span class="sd">    Raises:</span>
-<span class="sd">        ValueError: Space is not a valid :class:`gym.Space` instance</span>
-
-<span class="sd">    Example:</span>
-<span class="sd">        &gt;&gt;&gt; from gymnasium.spaces import Box</span>
-<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
-<span class="sd">        &gt;&gt;&gt; space = Box(low=0, high=1, shape=(3,), seed=42, dtype=np.float32)</span>
-<span class="sd">        &gt;&gt;&gt; out = np.zeros((2, 3), dtype=np.float32)</span>
-<span class="sd">        &gt;&gt;&gt; items = [space.sample() for _ in range(2)]</span>
-<span class="sd">        &gt;&gt;&gt; concatenate(space, items, out)</span>
-<span class="sd">        array([[0.77395606, 0.43887845, 0.85859793],</span>
-<span class="sd">               [0.697368  , 0.09417735, 0.97562236]], dtype=float32)</span>
+<span class="sd">    - Noop Reset: Obtains the initial state by taking a random number of no-ops on reset, default max 30 no-ops.</span>
+<span class="sd">    - Frame skipping: The number of frames skipped between steps, 4 by default</span>
+<span class="sd">    - Max-pooling: Pools over the most recent two observations from the frame skips</span>
+<span class="sd">    - Termination signal when a life is lost: When the agent losses a life during the environment, then the environment is terminated.</span>
+<span class="sd">        Turned off by default. Not recommended by Machado et al. (2018).</span>
+<span class="sd">    - Resize to a square image: Resizes the atari environment original observation shape from 210x180 to 84x84 by default</span>
+<span class="sd">    - Grayscale observation: If the observation is colour or greyscale, by default, greyscale.</span>
+<span class="sd">    - Scale observation: If to scale the observation between [0, 1) or [0, 255), by default, not scaled.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;Space of type `</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">space</span><span class="p">)</span><span class="si">}</span><span class="s2">` is not a valid `gymnasium.Space` instance.&quot;</span>
-    <span class="p">)</span></div>
 
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">env</span><span class="p">:</span> <span class="n">gym</span><span class="o">.</span><span class="n">Env</span><span class="p">,</span>
+        <span class="n">noop_max</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span>
+        <span class="n">frame_skip</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
+        <span class="n">screen_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">84</span><span class="p">,</span>
+        <span class="n">terminal_on_life_loss</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">grayscale_obs</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">grayscale_newaxis</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">scale_obs</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Wrapper for Atari 2600 preprocessing.</span>
 
-<span class="nd">@concatenate</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Box</span><span class="p">)</span>
-<span class="nd">@concatenate</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Discrete</span><span class="p">)</span>
-<span class="nd">@concatenate</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">MultiDiscrete</span><span class="p">)</span>
-<span class="nd">@concatenate</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">MultiBinary</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">_concatenate_base</span><span class="p">(</span><span class="n">space</span><span class="p">,</span> <span class="n">items</span><span class="p">,</span> <span class="n">out</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="n">out</span><span class="p">)</span>
+<span class="sd">        Args:</span>
+<span class="sd">            env (Env): The environment to apply the preprocessing</span>
+<span class="sd">            noop_max (int): For No-op reset, the max number no-ops actions are taken at reset, to turn off, set to 0.</span>
+<span class="sd">            frame_skip (int): The number of frames between new observation the agents observations effecting the frequency at which the agent experiences the game.</span>
+<span class="sd">            screen_size (int): resize Atari frame</span>
+<span class="sd">            terminal_on_life_loss (bool): `if True`, then :meth:`step()` returns `terminated=True` whenever a</span>
+<span class="sd">                life is lost.</span>
+<span class="sd">            grayscale_obs (bool): if True, then gray scale observation is returned, otherwise, RGB observation</span>
+<span class="sd">                is returned.</span>
+<span class="sd">            grayscale_newaxis (bool): `if True and grayscale_obs=True`, then a channel axis is added to</span>
+<span class="sd">                grayscale observations to make them 3-dimensional.</span>
+<span class="sd">            scale_obs (bool): if True, then observation normalized in range [0,1) is returned. It also limits memory</span>
+<span class="sd">                optimization benefits of FrameStack Wrapper.</span>
 
+<span class="sd">        Raises:</span>
+<span class="sd">            DependencyNotInstalled: opencv-python package not installed</span>
+<span class="sd">            ValueError: Disable frame-skipping in the original env</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">gym</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">RecordConstructorArgs</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">noop_max</span><span class="o">=</span><span class="n">noop_max</span><span class="p">,</span>
+            <span class="n">frame_skip</span><span class="o">=</span><span class="n">frame_skip</span><span class="p">,</span>
+            <span class="n">screen_size</span><span class="o">=</span><span class="n">screen_size</span><span class="p">,</span>
+            <span class="n">terminal_on_life_loss</span><span class="o">=</span><span class="n">terminal_on_life_loss</span><span class="p">,</span>
+            <span class="n">grayscale_obs</span><span class="o">=</span><span class="n">grayscale_obs</span><span class="p">,</span>
+            <span class="n">grayscale_newaxis</span><span class="o">=</span><span class="n">grayscale_newaxis</span><span class="p">,</span>
+            <span class="n">scale_obs</span><span class="o">=</span><span class="n">scale_obs</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">gym</span><span class="o">.</span><span class="n">Wrapper</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">)</span>
 
-<span class="nd">@concatenate</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Tuple</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">_concatenate_tuple</span><span class="p">(</span><span class="n">space</span><span class="p">,</span> <span class="n">items</span><span class="p">,</span> <span class="n">out</span><span class="p">):</span>
-    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span>
-        <span class="n">concatenate</span><span class="p">(</span><span class="n">subspace</span><span class="p">,</span> <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">],</span> <span class="n">out</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-        <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">subspace</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">space</span><span class="o">.</span><span class="n">spaces</span><span class="p">)</span>
-    <span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">import</span> <span class="nn">cv2</span>  <span class="c1"># noqa: F401</span>
+        <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">gym</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">DependencyNotInstalled</span><span class="p">(</span>
+                <span class="s2">&quot;opencv-python package not installed, run `pip install gymnasium[other]` to get dependencies for atari&quot;</span>
+            <span class="p">)</span>
 
+        <span class="k">assert</span> <span class="n">frame_skip</span> <span class="o">&gt;</span> <span class="mi">0</span>
+        <span class="k">assert</span> <span class="n">screen_size</span> <span class="o">&gt;</span> <span class="mi">0</span>
+        <span class="k">assert</span> <span class="n">noop_max</span> <span class="o">&gt;=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="n">frame_skip</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="n">env</span><span class="o">.</span><span class="n">spec</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="ow">and</span> <span class="s2">&quot;NoFrameskip&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">env</span><span class="o">.</span><span class="n">spec</span><span class="o">.</span><span class="n">id</span>
+                <span class="ow">and</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">unwrapped</span><span class="p">,</span> <span class="s2">&quot;_frameskip&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span>
+            <span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;Disable frame-skipping in the original env. Otherwise, more than one &quot;</span>
+                    <span class="s2">&quot;frame-skip will happen as through this wrapper&quot;</span>
+                <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">noop_max</span> <span class="o">=</span> <span class="n">noop_max</span>
+        <span class="k">assert</span> <span class="n">env</span><span class="o">.</span><span class="n">unwrapped</span><span class="o">.</span><span class="n">get_action_meanings</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;NOOP&quot;</span>
 
-<span class="nd">@concatenate</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Dict</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">_concatenate_dict</span><span class="p">(</span><span class="n">space</span><span class="p">,</span> <span class="n">items</span><span class="p">,</span> <span class="n">out</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">OrderedDict</span><span class="p">(</span>
-        <span class="p">[</span>
-            <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">concatenate</span><span class="p">(</span><span class="n">subspace</span><span class="p">,</span> <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">],</span> <span class="n">out</span><span class="p">[</span><span class="n">key</span><span class="p">]))</span>
-            <span class="k">for</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">subspace</span><span class="p">)</span> <span class="ow">in</span> <span class="n">space</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-        <span class="p">]</span>
-    <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">frame_skip</span> <span class="o">=</span> <span class="n">frame_skip</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">screen_size</span> <span class="o">=</span> <span class="n">screen_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">terminal_on_life_loss</span> <span class="o">=</span> <span class="n">terminal_on_life_loss</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">grayscale_obs</span> <span class="o">=</span> <span class="n">grayscale_obs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">grayscale_newaxis</span> <span class="o">=</span> <span class="n">grayscale_newaxis</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scale_obs</span> <span class="o">=</span> <span class="n">scale_obs</span>
 
+        <span class="c1"># buffer of most recent two observations for max pooling</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">observation_space</span><span class="p">,</span> <span class="n">Box</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">grayscale_obs</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">obs_buffer</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">),</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">),</span>
+            <span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">obs_buffer</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">),</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">),</span>
+            <span class="p">]</span>
 
-<span class="nd">@concatenate</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Space</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">_concatenate_custom</span><span class="p">(</span><span class="n">space</span><span class="p">,</span> <span class="n">items</span><span class="p">,</span> <span class="n">out</span><span class="p">):</span>
-    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lives</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">game_over</span> <span class="o">=</span> <span class="kc">False</span>
 
+        <span class="n">_low</span><span class="p">,</span> <span class="n">_high</span><span class="p">,</span> <span class="n">_obs_dtype</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">scale_obs</span> <span class="k">else</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">_shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">screen_size</span><span class="p">,</span> <span class="n">screen_size</span><span class="p">,</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">grayscale_obs</span> <span class="k">else</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">grayscale_obs</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">grayscale_newaxis</span><span class="p">:</span>
+            <span class="n">_shape</span> <span class="o">=</span> <span class="n">_shape</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># Remove channel axis</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">observation_space</span> <span class="o">=</span> <span class="n">Box</span><span class="p">(</span>
+            <span class="n">low</span><span class="o">=</span><span class="n">_low</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="n">_high</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">_shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">_obs_dtype</span>
+        <span class="p">)</span>
 
-<div class="viewcode-block" id="create_empty_array"><a class="viewcode-back" href="../../../../../api/spaces/vector_utils/#gymnasium.vector.utils.create_empty_array">[docs]</a><span class="nd">@singledispatch</span>
-<span class="k">def</span> <span class="nf">create_empty_array</span><span class="p">(</span>
-    <span class="n">space</span><span class="p">:</span> <span class="n">Space</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">fn</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create an empty (possibly nested) numpy array.</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">ale</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Make ale as a class property to avoid serialization error.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">unwrapped</span><span class="o">.</span><span class="n">ale</span>
 
-<span class="sd">    Args:</span>
-<span class="sd">        space: Observation space of a single environment in the vectorized environment.</span>
-<span class="sd">        n: Number of environments in the vectorized environment. If `None`, creates an empty sample from `space`.</span>
-<span class="sd">        fn: Function to apply when creating the empty numpy array. Examples of such functions are `np.empty` or `np.zeros`.</span>
+    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Applies the preprocessing for an :meth:`env.step`.&quot;&quot;&quot;</span>
+        <span class="n">total_reward</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="p">{}</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">        The output object. This object is a (possibly nested) numpy array.</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">frame_skip</span><span class="p">):</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+            <span class="n">total_reward</span> <span class="o">+=</span> <span class="n">reward</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">game_over</span> <span class="o">=</span> <span class="n">terminated</span>
 
-<span class="sd">    Raises:</span>
-<span class="sd">        ValueError: Space is not a valid :class:`gym.Space` instance</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">terminal_on_life_loss</span><span class="p">:</span>
+                <span class="n">new_lives</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ale</span><span class="o">.</span><span class="n">lives</span><span class="p">()</span>
+                <span class="n">terminated</span> <span class="o">=</span> <span class="n">terminated</span> <span class="ow">or</span> <span class="n">new_lives</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">lives</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">game_over</span> <span class="o">=</span> <span class="n">terminated</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">lives</span> <span class="o">=</span> <span class="n">new_lives</span>
 
-<span class="sd">    Example:</span>
-<span class="sd">        &gt;&gt;&gt; from gymnasium.spaces import Box, Dict</span>
-<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
-<span class="sd">        &gt;&gt;&gt; space = Dict({</span>
-<span class="sd">        ... &#39;position&#39;: Box(low=0, high=1, shape=(3,), dtype=np.float32),</span>
-<span class="sd">        ... &#39;velocity&#39;: Box(low=0, high=1, shape=(2,), dtype=np.float32)})</span>
-<span class="sd">        &gt;&gt;&gt; create_empty_array(space, n=2, fn=np.zeros)</span>
-<span class="sd">        OrderedDict([(&#39;position&#39;, array([[0., 0., 0.],</span>
-<span class="sd">               [0., 0., 0.]], dtype=float32)), (&#39;velocity&#39;, array([[0., 0.],</span>
-<span class="sd">               [0., 0.]], dtype=float32))])</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;Space of type `</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">space</span><span class="p">)</span><span class="si">}</span><span class="s2">` is not a valid `gymnasium.Space` instance.&quot;</span>
-    <span class="p">)</span></div>
+            <span class="k">if</span> <span class="n">terminated</span> <span class="ow">or</span> <span class="n">truncated</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="k">if</span> <span class="n">t</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame_skip</span> <span class="o">-</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">grayscale_obs</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">ale</span><span class="o">.</span><span class="n">getScreenGrayscale</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obs_buffer</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">ale</span><span class="o">.</span><span class="n">getScreenRGB</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obs_buffer</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">elif</span> <span class="n">t</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame_skip</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">grayscale_obs</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">ale</span><span class="o">.</span><span class="n">getScreenGrayscale</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obs_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">ale</span><span class="o">.</span><span class="n">getScreenRGB</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obs_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_obs</span><span class="p">(),</span> <span class="n">total_reward</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">info</span>
 
+    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Resets the environment using preprocessing.&quot;&quot;&quot;</span>
+        <span class="c1"># NoopReset</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">reset_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-<span class="c1"># It is possible for the some of the Box low to be greater than 0, then array is not in space</span>
-<span class="nd">@create_empty_array</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Box</span><span class="p">)</span>
-<span class="c1"># If the Discrete start &gt; 0 or start + length &lt; 0 then array is not in space</span>
-<span class="nd">@create_empty_array</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Discrete</span><span class="p">)</span>
-<span class="nd">@create_empty_array</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">MultiDiscrete</span><span class="p">)</span>
-<span class="nd">@create_empty_array</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">MultiBinary</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">_create_empty_array_base</span><span class="p">(</span><span class="n">space</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">fn</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">):</span>
-    <span class="n">shape</span> <span class="o">=</span> <span class="n">space</span><span class="o">.</span><span class="n">shape</span> <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="k">else</span> <span class="p">(</span><span class="n">n</span><span class="p">,)</span> <span class="o">+</span> <span class="n">space</span><span class="o">.</span><span class="n">shape</span>
-    <span class="k">return</span> <span class="n">fn</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">space</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="n">noops</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">unwrapped</span><span class="o">.</span><span class="n">np_random</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">noop_max</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">noop_max</span> <span class="o">&gt;</span> <span class="mi">0</span>
+            <span class="k">else</span> <span class="mi">0</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">noops</span><span class="p">):</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">step_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">reset_info</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">step_info</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">terminated</span> <span class="ow">or</span> <span class="n">truncated</span><span class="p">:</span>
+                <span class="n">_</span><span class="p">,</span> <span class="n">reset_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">lives</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ale</span><span class="o">.</span><span class="n">lives</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">grayscale_obs</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ale</span><span class="o">.</span><span class="n">getScreenGrayscale</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obs_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ale</span><span class="o">.</span><span class="n">getScreenRGB</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obs_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">obs_buffer</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
-<span class="nd">@create_empty_array</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Tuple</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">_create_empty_array_tuple</span><span class="p">(</span><span class="n">space</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">fn</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">):</span>
-    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">create_empty_array</span><span class="p">(</span><span class="n">subspace</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">fn</span><span class="o">=</span><span class="n">fn</span><span class="p">)</span> <span class="k">for</span> <span class="n">subspace</span> <span class="ow">in</span> <span class="n">space</span><span class="o">.</span><span class="n">spaces</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_obs</span><span class="p">(),</span> <span class="n">reset_info</span>
 
+    <span class="k">def</span> <span class="nf">_get_obs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame_skip</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># more efficient in-place pooling</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obs_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">obs_buffer</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">out</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">obs_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
-<span class="nd">@create_empty_array</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Dict</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">_create_empty_array_dict</span><span class="p">(</span><span class="n">space</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">fn</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">OrderedDict</span><span class="p">(</span>
-        <span class="p">[</span>
-            <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">create_empty_array</span><span class="p">(</span><span class="n">subspace</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">fn</span><span class="o">=</span><span class="n">fn</span><span class="p">))</span>
-            <span class="k">for</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">subspace</span><span class="p">)</span> <span class="ow">in</span> <span class="n">space</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-        <span class="p">]</span>
-    <span class="p">)</span>
+        <span class="kn">import</span> <span class="nn">cv2</span>
 
+        <span class="n">obs</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">obs_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">screen_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">screen_size</span><span class="p">),</span>
+            <span class="n">interpolation</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">INTER_AREA</span><span class="p">,</span>
+        <span class="p">)</span>
 
-<span class="nd">@create_empty_array</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Space</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">_create_empty_array_custom</span><span class="p">(</span><span class="n">space</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">fn</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">):</span>
-    <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale_obs</span><span class="p">:</span>
+            <span class="n">obs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">obs</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="o">/</span> <span class="mf">255.0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">obs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">obs</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">grayscale_obs</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">grayscale_newaxis</span><span class="p">:</span>
+            <span class="n">obs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">obs</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># Add a channel axis</span>
+        <span class="k">return</span> <span class="n">obs</span></div>
 </pre></div>
           </article>
         </div>
