@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="en" data-content_root="../../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark">
@@ -11,15 +11,15 @@
 <link rel="index" title="Index" href="../../../genindex/" /><link rel="search" title="Search" href="../../../search/" /><link rel="next" title="Training Agents" href="../../training_agents/" /><link rel="prev" title="Make your own custom environment" href="../environment_creation/" />
         <link rel="canonical" href="https://gymnasium.farama.org/tutorials/gymnasium_basics/vector_envs_tutorial.html" />
 
-    <link rel="shortcut icon" href="../../../_static/favicon.png"/><!-- Generated with Sphinx 7.0.1 and Furo 2023.05.20.dev1 -->
+    <link rel="shortcut icon" href="../../../_static/favicon.png"/><!-- Generated with Sphinx 7.2.6 and Furo 2023.08.19.dev1 -->
         <title>Training A2C with Vector Envs and Domain Randomization - Gymnasium Documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=a022fd11c0d7e10ac71ac296890386cea7a2fa24" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?digest=6342a809aabeb35cfac296000cfa245808bc1d78" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=3e7f4c72" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=ca3c1c84" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=e5fbc548" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=49cbaffd" />
     
     
 
@@ -57,18 +57,6 @@
               <line x1="0.232" y1="12" x2="23.5" y2="12"></line>
               <line x1="0.232" y1="20" x2="23.5" y2="20"></line>
             </svg>
-            <!-- <svg viewBox="0 0 24 24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <line x1="0.5" y1="4.5" x2="23.5" y2="4.5" style="fill: none; "></line>
-              <line x1="0.5" y1="12" x2="14" y2="12" ></line>
-              <line x1="0.5" y1="19.5" x2="23.5" y2="19.5"></line>
-              <polyline style="stroke-width: 0px;" points="17 7 22 12 17 17"></polyline>
-            </svg> -->
-            <!-- <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width:20px">
-              <defs></defs>
-              <rect y="1" width="22" height="22" rx="2" ry="2" style="fill: none;" x="1"></rect>
-              <line x1="8" y1="1" x2="8" y2="23"></line>
-              <polyline style="stroke-linecap: round; fill: none; stroke-linejoin: round;" points="13 7 17 12 13 17"></polyline>
-            </svg> -->
           </label>
         </div>
         <div class="farama-header__left farama-header__center--mobile">
@@ -488,15 +476,15 @@
           <article role="main">
             
             <section class="sphx-glr-example-title" id="training-a2c-with-vector-envs-and-domain-randomization">
-<span id="sphx-glr-tutorials-gymnasium-basics-vector-envs-tutorial-py"></span><h1>Training A2C with Vector Envs and Domain Randomization<a class="headerlink" href="#training-a2c-with-vector-envs-and-domain-randomization" title="Permalink to this heading">#</a></h1>
+<span id="sphx-glr-tutorials-gymnasium-basics-vector-envs-tutorial-py"></span><h1>Training A2C with Vector Envs and Domain Randomization<a class="headerlink" href="#training-a2c-with-vector-envs-and-domain-randomization" title="Link to this heading">#</a></h1>
 <section id="notice">
-<h2>Notice<a class="headerlink" href="#notice" title="Permalink to this heading">#</a></h2>
+<h2>Notice<a class="headerlink" href="#notice" title="Link to this heading">#</a></h2>
 <p>If you encounter an RuntimeError like the following comment raised on multiprocessing/spawn.py, wrap up the code from <code class="docutils literal notranslate"><span class="pre">gym.vector.make=</span></code> or <code class="docutils literal notranslate"><span class="pre">gym.vector.AsyncVectorEnv</span></code> to the end of the code by <code class="docutils literal notranslate"><span class="pre">if__name__</span> <span class="pre">==</span> <span class="pre">'__main__'</span></code>.</p>
 <p><code class="docutils literal notranslate"><span class="pre">An</span> <span class="pre">attempt</span> <span class="pre">has</span> <span class="pre">been</span> <span class="pre">made</span> <span class="pre">to</span> <span class="pre">start</span> <span class="pre">a</span> <span class="pre">new</span> <span class="pre">process</span> <span class="pre">before</span> <span class="pre">the</span> <span class="pre">current</span> <span class="pre">process</span> <span class="pre">has</span> <span class="pre">finished</span> <span class="pre">its</span> <span class="pre">bootstrapping</span> <span class="pre">phase.</span></code></p>
 <hr class="docutils" />
 </section>
 <section id="introduction">
-<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h2>
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
 <p>In this tutorial, you’ll learn how to use vectorized environments to train an Advantage Actor-Critic agent.
 We are going to use A2C, which is the synchronous version of the A3C algorithm [1].</p>
 <p>Vectorized environments [3] can help to achieve quicker and more robust training by allowing multiple instances
@@ -533,7 +521,7 @@ In addition, it also returns the entropy of the policy distribution, which is su
 </div>
 </section>
 <section id="advantage-actor-critic-a2c">
-<h2>Advantage Actor-Critic (A2C)<a class="headerlink" href="#advantage-actor-critic-a2c" title="Permalink to this heading">#</a></h2>
+<h2>Advantage Actor-Critic (A2C)<a class="headerlink" href="#advantage-actor-critic-a2c" title="Link to this heading">#</a></h2>
 <p>The Actor-Critic combines elements of value-based and policy-based methods. In A2C, the agent has two separate neural networks:
 a critic network that estimates the state-value function, and an actor network that outputs logits for a categorical probability distribution over all actions.
 The critic network is trained to minimize the mean squared error between the predicted state values and the actual returns received by the agent
@@ -708,7 +696,7 @@ and domain randomization to accelerate the training process for A2C (and other r
 </div>
 </section>
 <section id="using-vectorized-environments">
-<h2>Using Vectorized Environments<a class="headerlink" href="#using-vectorized-environments" title="Permalink to this heading">#</a></h2>
+<h2>Using Vectorized Environments<a class="headerlink" href="#using-vectorized-environments" title="Link to this heading">#</a></h2>
 <p>When you calculate the losses for the two Neural Networks over only one epoch, it might have a high variance. With vectorized environments,
 we can play with <cite>n_envs</cite> in parallel and thus get up to a linear speedup (meaning that in theory, we collect samples <cite>n_envs</cite> times quicker)
 that we can use to calculate the loss for the current policy and critic network. When we are using more samples to calculate the loss,
@@ -721,7 +709,7 @@ but we can still make use of asynchronous vector envs to spawn multiple processe
 </div>
 </section>
 <section id="domain-randomization">
-<h2>Domain Randomization<a class="headerlink" href="#domain-randomization" title="Permalink to this heading">#</a></h2>
+<h2>Domain Randomization<a class="headerlink" href="#domain-randomization" title="Link to this heading">#</a></h2>
 <p>If we want to randomize the environment for training to get more robust agents (that can deal with different parameterizations of an environment
 and theirfore might have a higher degree of generalization), we can set the desired parameters manually or use a pseudo-random number generator to generate them.</p>
 <p>Manually setting up 3 parallel ‘LunarLander-v2’ envs with different parameters:</p>
@@ -782,7 +770,7 @@ To mitigate this, you can either pick a high number of randomly parameterized en
 to generate a new set of pseudo-random parameters.</p>
 </section>
 <section id="setup">
-<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this heading">#</a></h2>
+<h2>Setup<a class="headerlink" href="#setup" title="Link to this heading">#</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># environment hyperparams</span>
 <span class="n">n_envs</span> <span class="o">=</span> <span class="mi">10</span>
 <span class="n">n_updates</span> <span class="o">=</span> <span class="mi">1000</span>
@@ -841,7 +829,7 @@ to generate a new set of pseudo-random parameters.</p>
 </div>
 </section>
 <section id="training-the-a2c-agent">
-<h2>Training the A2C Agent<a class="headerlink" href="#training-the-a2c-agent" title="Permalink to this heading">#</a></h2>
+<h2>Training the A2C Agent<a class="headerlink" href="#training-the-a2c-agent" title="Link to this heading">#</a></h2>
 <p>For our training loop, we are using the <cite>RecordEpisodeStatistics</cite> wrapper to record the episode lengths and returns and we are also saving
 the losses and entropies to plot them after the agent finished training.</p>
 <p>You may notice that the don’t reset the vectorized envs at the start of each episode like we would usually do.
@@ -915,7 +903,7 @@ use the rest of the timesteps to begin a new one).</p>
 </div>
 </section>
 <section id="plotting">
-<h2>Plotting<a class="headerlink" href="#plotting" title="Permalink to this heading">#</a></h2>
+<h2>Plotting<a class="headerlink" href="#plotting" title="Link to this heading">#</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot; plot the results &quot;&quot;&quot;</span>
 
 <span class="c1"># %matplotlib inline</span>
@@ -981,7 +969,7 @@ use the rest of the timesteps to begin a new one).</p>
 <img alt="training_plots" src="../../../_images/vector_env_a2c_training_plots.png" />
 </section>
 <section id="performance-analysis-of-synchronous-and-asynchronous-vectorized-environments">
-<h2>Performance Analysis of Synchronous and Asynchronous Vectorized Environments<a class="headerlink" href="#performance-analysis-of-synchronous-and-asynchronous-vectorized-environments" title="Permalink to this heading">#</a></h2>
+<h2>Performance Analysis of Synchronous and Asynchronous Vectorized Environments<a class="headerlink" href="#performance-analysis-of-synchronous-and-asynchronous-vectorized-environments" title="Link to this heading">#</a></h2>
 <hr class="docutils" />
 <p>Asynchronous environments can lead to quicker training times and a higher speedup
 for data collection compared to synchronous environments. This is because asynchronous environments
@@ -1009,7 +997,7 @@ parallel environments to achieve optimal performance.</p>
 <img alt="runtime_until_threshold_plot" src="../../../_images/vector_env_runtime_until_threshold.png" />
 </section>
 <section id="saving-loading-weights">
-<h2>Saving/ Loading Weights<a class="headerlink" href="#saving-loading-weights" title="Permalink to this heading">#</a></h2>
+<h2>Saving/ Loading Weights<a class="headerlink" href="#saving-loading-weights" title="Link to this heading">#</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">save_weights</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="n">load_weights</span> <span class="o">=</span> <span class="kc">False</span>
 
@@ -1037,7 +1025,7 @@ parallel environments to achieve optimal performance.</p>
 </div>
 </section>
 <section id="showcase-the-agent">
-<h2>Showcase the Agent<a class="headerlink" href="#showcase-the-agent" title="Permalink to this heading">#</a></h2>
+<h2>Showcase the Agent<a class="headerlink" href="#showcase-the-agent" title="Link to this heading">#</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot; play a couple of showcase episodes &quot;&quot;&quot;</span>
 
 <span class="n">n_showcase_episodes</span> <span class="o">=</span> <span class="mi">3</span>
@@ -1086,7 +1074,7 @@ parallel environments to achieve optimal performance.</p>
 </div>
 </section>
 <section id="try-playing-the-environment-yourself">
-<h2>Try playing the environment yourself<a class="headerlink" href="#try-playing-the-environment-yourself" title="Permalink to this heading">#</a></h2>
+<h2>Try playing the environment yourself<a class="headerlink" href="#try-playing-the-environment-yourself" title="Link to this heading">#</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># from gymnasium.utils.play import play</span>
 <span class="c1">#</span>
 <span class="c1"># play(gym.make(&#39;LunarLander-v2&#39;, render_mode=&#39;rgb_array&#39;),</span>
@@ -1095,7 +1083,7 @@ parallel environments to achieve optimal performance.</p>
 </div>
 </section>
 <section id="references">
-<h2>References<a class="headerlink" href="#references" title="Permalink to this heading">#</a></h2>
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
 <p>[1] V. Mnih, A. P. Badia, M. Mirza, A. Graves, T. P. Lillicrap, T. Harley, D. Silver, K. Kavukcuoglu. “Asynchronous Methods for Deep Reinforcement Learning” ICML (2016).</p>
 <p>[2] J. Schulman, P. Moritz, S. Levine, M. Jordan and P. Abbeel. “High-dimensional continuous control using generalized advantage estimation.” ICLR (2016).</p>
 <p>[3] Gymnasium Documentation: Vector environments. (URL: <a class="reference external" href="https://gymnasium.farama.org/api/vector/">https://gymnasium.farama.org/api/vector/</a>)</p>
@@ -1225,46 +1213,97 @@ parallel environments to achieve optimal performance.</p>
     </script>
 
     
-    <script>
-          (() => {
-              if (!localStorage.getItem("shownCookieAlert")) {
-                  const boxElem = document.createElement("div");
-                  boxElem.classList.add("cookie-alert");
-                  const containerElem = document.createElement("div");
-                  containerElem.classList.add("cookie-alert__container");
-                  const textElem = document.createElement("p");
-                  textElem.innerHTML = `This page uses <a href="https://analytics.google.com/">
-                                      Google Analytics</a> to collect statistics. You can disable it by blocking
-                                      the JavaScript coming from www.google-analytics.com.`;
-                                      containerElem.appendChild(textElem);
-                  const closeBtn = document.createElement("button");
-                  closeBtn.innerHTML = `<?xml version="1.0" ?><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><defs><style>.cls-1{fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px;}</style></defs><title/><g id="cross"><line class="cls-1" x1="7" x2="25" y1="7" y2="25"/><line class="cls-1" x1="7" x2="25" y1="25" y2="7"/></g></svg>`
-                  closeBtn.onclick = () => {
-                      localStorage.setItem("shownCookieAlert", "true");
-                      boxElem.style.display = "none";
-                  }
-                  containerElem.appendChild(closeBtn);
-                  boxElem.appendChild(containerElem);
-                  document.body.appendChild(boxElem);
-              }
-          })()
-      </script>
-
-      <script async src="https://www.googletagmanager.com/gtag/js?id=G-6H9C8TWXZ8"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6H9C8TWXZ8"></script>
       <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
+        const enableGtag = () => {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-6H9C8TWXZ8');
+        }
+        (() => {
+            if (!localStorage.getItem("acceptedCookieAlert")) {
+                const boxElem = document.createElement("div");
+                boxElem.classList.add("cookie-alert");
+                const containerElem = document.createElement("div");
+                containerElem.classList.add("cookie-alert__container");
+                const textElem = document.createElement("p");
+                textElem.innerHTML = `This page uses <a href="https://analytics.google.com/">
+                                    Google Analytics</a> to collect statistics.`;
+                                    containerElem.appendChild(textElem);
 
-        gtag('config', 'G-6H9C8TWXZ8');
+                const declineBtn = Object.assign(document.createElement("button"),
+                  {
+                    innerText: "Deny",
+                    className: "farama-btn cookie-alert__button",
+                    id: "cookie-alert__decline",
+                  }
+                );
+                declineBtn.addEventListener("click", () => {
+                  localStorage.setItem("acceptedCookieAlert", false);
+                  boxElem.remove();
+                });
+
+                const acceptBtn = Object.assign(document.createElement("button"),
+                  {
+                    innerText: "Allow",
+                    className: "farama-btn cookie-alert__button",
+                    id: "cookie-alert__accept",
+                  }
+                );
+                acceptBtn.addEventListener("click", () => {
+                  localStorage.setItem("acceptedCookieAlert", true);
+                  boxElem.remove();
+                  enableGtag();
+                });
+
+                containerElem.appendChild(declineBtn);
+                containerElem.appendChild(acceptBtn);
+                boxElem.appendChild(containerElem);
+                document.body.appendChild(boxElem);
+            } else if (localStorage.getItem("acceptedCookieAlert") === "true") {
+              enableGtag();
+            }
+        })()
       </script>
 
-    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-    <script src="../../../_static/doctools.js"></script>
-    <script src="../../../_static/sphinx_highlight.js"></script>
-    <script src="../../../_static/scripts/furo.js"></script>
+    <script src="../../../_static/documentation_options.js?v=23ffd8e7"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/scripts/furo.js?v=7660844c"></script>
     
     <script>
+
+      const createProjectsList = (projects, displayImages) => {
+        const ulElem = Object.assign(document.createElement('ul'),
+          {
+            className:'farama-header-menu-list',
+          }
+        )
+        for (let project of projects) {
+          const liElem = document.createElement("li");
+          const aElem = Object.assign(document.createElement("a"),
+            {
+              href: project.link
+            }
+          );
+          liElem.appendChild(aElem);
+          if (displayImages) {
+            const imgElem = Object.assign(document.createElement("img"),
+              {
+                src: project.image ? imagesBasepath + project.image : imagesBasepath + "/farama_black.svg",
+                alt: `${project.name} logo`,
+                className: "farama-black-logo-invert"
+              }
+            );
+            aElem.appendChild(imgElem);
+          }
+          aElem.appendChild(document.createTextNode(project.name));
+          ulElem.appendChild(liElem);
+        }
+        return ulElem;
+      }
+
       // Create menu with Farama projects by using the API at farama.org/api/projects.json
       const createCORSRequest = (method, url) => {
         let xhr = new XMLHttpRequest();
@@ -1291,9 +1330,15 @@ parallel environments to achieve optimal performance.</p>
       xhr.onload = () => {
         const jsonResponse = xhr.response;
         const sections = {
-          "Documentation": [],
-          "Mature Projects": [],
-          "Incubating Projects": [],
+          "Core Projects": [],
+          "Mature Projects": {
+            "Documentation": [],
+            "Repositories": [],
+          },
+          "Incubating Projects": {
+            "Documentation": [],
+            "Repositories": [],
+          },
           "Foundation": [
             {
               name: "About",
@@ -1309,28 +1354,38 @@ parallel environments to achieve optimal performance.</p>
             }
           ]
         }
+
+        // Categorize projects
         Object.keys(jsonResponse).forEach(key => {
           projectJson = jsonResponse[key];
           if (projectJson.website !== null) {
             projectJson.link = projectJson.website;
-            sections["Documentation"].push(projectJson)
-          } else if (projectJson.type == "mature") {
-            projectJson.link = projectJson.github;
-            sections["Mature Projects"].push(projectJson)
           } else {
             projectJson.link = projectJson.github;
-            sections["Incubating Projects"].push(projectJson)
+          }
+          if (projectJson.type === "core") {
+            sections["Core Projects"].push(projectJson)
+          } else if (projectJson.type == "mature") {
+            if (projectJson.website !== null) {
+              sections["Mature Projects"]["Documentation"].push(projectJson)
+            } else {
+              sections["Mature Projects"]["Repositories"].push(projectJson)
+            }
+          } else {
+            if (projectJson.website !== null) {
+              sections["Incubating Projects"]["Documentation"].push(projectJson)
+            } else {
+              sections["Incubating Projects"]["Repositories"].push(projectJson)
+            }
           }
         })
 
         const menuContainer = document.querySelector(".farama-header-menu__body");
 
         Object.keys(sections).forEach((key, i) => {
-          projects = sections[key];
           const sectionElem = Object.assign(
             document.createElement('div'), {
               className:'farama-header-menu__section',
-              style: "padding-left: 24px"
             }
           )
           sectionElem.appendChild(Object.assign(document.createElement('span'),
@@ -1339,33 +1394,37 @@ parallel environments to achieve optimal performance.</p>
               innerText: key
             }
           ))
-          const ulElem = Object.assign(document.createElement('ul'),
-            {
-              className:'farama-header-menu-list',
-            }
-          )
-          for (let project of projects) {
-            const liElem = document.createElement("li");
-            const aElem = Object.assign(document.createElement("a"),
-              {
-                href: project.link
-              }
-            );
-            liElem.appendChild(aElem);
-            if (key !== "Foundation") {
-              const imgElem = Object.assign(document.createElement("img"),
-                {
-                  src: project.image ? imagesBasepath + project.image : imagesBasepath + "/farama_black.svg",
-                  alt: `${project.name} logo`,
-                  className: "farama-black-logo-invert"
+          // is not a list
+          if (sections[key].constructor !== Array) {
+            const subSections = sections[key];
+            const subSectionContainerElem = Object.assign(
+                document.createElement('div'), {
+                  className:'farama-header-menu__subsections-container',
+                  style: 'display: flex'
                 }
-              );
-              aElem.appendChild(imgElem);
-            }
-            aElem.appendChild(document.createTextNode(project.name));
-            ulElem.appendChild(liElem);
+            )
+            Object.keys(subSections).forEach((subKey, i) => {
+              const subSectionElem = Object.assign(
+                document.createElement('div'), {
+                  className:'farama-header-menu__subsection',
+                }
+              )
+              subSectionElem.appendChild(Object.assign(document.createElement('span'),
+                {
+                  className:'farama-header-menu__subsection-title' ,
+                  innerText: subKey
+                }
+              ))
+              const ulElem = createProjectsList(subSections[subKey], key !== 'Foundation');
+              subSectionElem.appendChild(ulElem);
+              subSectionContainerElem.appendChild(subSectionElem);
+            })
+            sectionElem.appendChild(subSectionContainerElem);
+          } else {
+            const projects = sections[key];
+            const ulElem = createProjectsList(projects, true);
+            sectionElem.appendChild(ulElem);
           }
-          sectionElem.appendChild(ulElem);
           menuContainer.appendChild(sectionElem)
         });
       }
