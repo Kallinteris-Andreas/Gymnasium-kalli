@@ -16,8 +16,8 @@
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=3e7f4c72" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=61a4c737" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=ca3c1c84" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=e5fbc548" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=49cbaffd" />
     
@@ -486,7 +486,7 @@
 <td><p><code class="docutils literal notranslate"><span class="pre">Box(-inf,</span> <span class="pre">inf,</span> <span class="pre">(8,),</span> <span class="pre">float64)</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>import</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">gymnasium.make(&quot;Swimmer-v4&quot;)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">gymnasium.make(&quot;Swimmer-v5&quot;)</span></code></p></td>
 </tr>
 </tbody>
 </table>
@@ -517,6 +517,36 @@ Problem parameters:</p>
 <p>While the default environment has <em>n</em> = 3, <em>l<sub>i</sub></em> = 0.1,
 and <em>k</em> = 0.1. It is possible to pass a custom MuJoCo XML file during construction to increase the
 number of links, or to tweak any of the parameters.</p>
+<p>Gymnasium includes the following versions of the environment:</p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Environment</p></th>
+<th class="head"><p>Binding</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Swimmer-v5</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">mujoco=&gt;2.3.3</span></code></p></td>
+<td><p>Recommended (most features, the least bugs)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Swimmer-v4</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">mujoco=&gt;2.1.3</span></code></p></td>
+<td><p>Maintained for reproducibility</p></td>
+</tr>
+<tr class="row-even"><td><p>Swimmer-v3</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">mujoco-py</span></code></p></td>
+<td><p>Maintained for reproducibility</p></td>
+</tr>
+<tr class="row-odd"><td><p>Swimmer-v2</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">mujoco-py</span></code></p></td>
+<td><p>Maintained for reproducibility</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>For more information see section “Version History”.</p>
 </section>
 <section id="action-space">
 <h2>Action Space<a class="headerlink" href="#action-space" title="Link to this heading">#</a></h2>
@@ -530,7 +560,7 @@ number of links, or to tweak any of the parameters.</p>
 <th class="head"><p>Control Max</p></th>
 <th class="head"><p>Name (in corresponding XML file)</p></th>
 <th class="head"><p>Joint</p></th>
-<th class="head"><p>Unit</p></th>
+<th class="head"><p>Type (Unit)</p></th>
 </tr>
 </thead>
 <tbody>
@@ -561,12 +591,10 @@ number of links, or to tweak any of the parameters.</p>
 <li><p>θ<sub>i</sub>: angle of part <em>i</em> with respect to the <em>x</em> axis</p></li>
 <li><p>θ<sub>i</sub>’: its derivative with respect to time (angular velocity)</p></li>
 </ul>
-<p>In the default case, observations do not include the x- and y-coordinates of the front tip. These may
-be included by passing <code class="docutils literal notranslate"><span class="pre">exclude_current_positions_from_observation=False</span></code> during construction.
-Then, the observation space will be <code class="docutils literal notranslate"><span class="pre">Box(-Inf,</span> <span class="pre">Inf,</span> <span class="pre">(10,),</span> <span class="pre">float64)</span></code> where the first two observations
-represent the x- and y-coordinates of the front tip.
-Regardless of whether <code class="docutils literal notranslate"><span class="pre">exclude_current_positions_from_observation</span></code> was set to true or false, the x- and y-coordinates
-will be returned in <code class="docutils literal notranslate"><span class="pre">info</span></code> with keys <code class="docutils literal notranslate"><span class="pre">&quot;x_position&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;y_position&quot;</span></code>, respectively.</p>
+<p>By default, the observation does not include the x- and y-coordinates of the front tip.
+These can be be included by passing <code class="docutils literal notranslate"><span class="pre">exclude_current_positions_from_observation=False</span></code> during construction.
+In this case, the observation space will be a <code class="docutils literal notranslate"><span class="pre">Box(-Inf,</span> <span class="pre">Inf,</span> <span class="pre">(10,),</span> <span class="pre">float64)</span></code>, where the first two observations are the x- and y-coordinates of the front tip.
+Regardless of whether <code class="docutils literal notranslate"><span class="pre">exclude_current_positions_from_observation</span></code> is set to true or false, the x- and y-coordinates are returned in <code class="docutils literal notranslate"><span class="pre">info</span></code> with keys <code class="docutils literal notranslate"><span class="pre">&quot;x_position&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;y_position&quot;</span></code>, respectively.</p>
 <p>By default, the observation is a <code class="docutils literal notranslate"><span class="pre">Box(-Inf,</span> <span class="pre">Inf,</span> <span class="pre">(8,),</span> <span class="pre">float64)</span></code> where the elements correspond to the following:</p>
 <div class="table-wrapper colwidths-auto docutils container">
 <table class="docutils align-default">
@@ -577,7 +605,7 @@ will be returned in <code class="docutils literal notranslate"><span class="pre"
 <th class="head"><p>Max</p></th>
 <th class="head"><p>Name (in corresponding XML file)</p></th>
 <th class="head"><p>Joint</p></th>
-<th class="head"><p>Unit</p></th>
+<th class="head"><p>Type (Unit)</p></th>
 </tr>
 </thead>
 <tbody>
@@ -667,39 +695,46 @@ will be returned in <code class="docutils literal notranslate"><span class="pre"
 </section>
 <section id="rewards">
 <h2>Rewards<a class="headerlink" href="#rewards" title="Link to this heading">#</a></h2>
-<p>The reward consists of two parts:</p>
+<p>The total reward is: <em><strong>reward</strong></em> <em>=</em> <em>forward_reward - ctrl_cost</em>.</p>
 <ul class="simple">
-<li><p><em>forward_reward</em>: A reward of moving forward which is measured
-as <em><code class="docutils literal notranslate"><span class="pre">forward_reward_weight</span></code> * (x-coordinate before action - x-coordinate after action)/dt</em>. <em>dt</em> is
-the time between actions and is dependent on the frame_skip parameter
-(default is 4), where the frametime is 0.01 - making the
-default <em>dt = 4 * 0.01 = 0.04</em>. This reward would be positive if the swimmer
-swims right as desired.</p></li>
-<li><p><em>ctrl_cost</em>: A cost for penalising the swimmer if it takes
-actions that are too large. It is measured as <em><code class="docutils literal notranslate"><span class="pre">ctrl_cost_weight</span></code> *
-sum(action<sup>2</sup>)</em> where <em><code class="docutils literal notranslate"><span class="pre">ctrl_cost_weight</span></code></em> is a parameter set for the
-control and has a default value of 1e-4</p></li>
+<li><p><em>forward_reward</em>:
+A reward for moving forward,
+this reward would be positive if the Swimmer moves forward (in the positive $x$ direction / in the right direction).
+$w_{forward} \times \frac{dx}{dt}$, where
+$dx$ is the displacement of the (front) “tip” ($x_{after-action} - x_{before-action}$),
+$dt$ is the time between actions, which depends on the <code class="docutils literal notranslate"><span class="pre">frame_skip</span></code> parameter (default is 4),
+and <code class="docutils literal notranslate"><span class="pre">frametime</span></code> which is 0.01 - so the default is $dt = 4 \times 0.01 = 0.04$,
+$w_{forward}$ is the <code class="docutils literal notranslate"><span class="pre">forward_reward_weight</span></code> (default is $1$).</p></li>
+<li><p><em>ctrl_cost</em>:
+A negative reward to penalize the Swimmer for taking actions that are too large.
+$w_{control} \times \|action\|<em>2^2$,
+where $w</em>{control}$ is <code class="docutils literal notranslate"><span class="pre">ctrl_cost_weight</span></code> (default is $10^{-4}$).</p></li>
 </ul>
-<p>The total reward returned is <em><strong>reward</strong></em> <em>=</em> <em>forward_reward - ctrl_cost</em> and <code class="docutils literal notranslate"><span class="pre">info</span></code> will also contain the individual reward terms</p>
+<p><code class="docutils literal notranslate"><span class="pre">info</span></code> contains the individual reward terms.</p>
 </section>
 <section id="starting-state">
 <h2>Starting State<a class="headerlink" href="#starting-state" title="Link to this heading">#</a></h2>
-<p>All observations start in state (0,0,0,0,0,0,0,0) with a Uniform noise in the range of [-<code class="docutils literal notranslate"><span class="pre">reset_noise_scale</span></code>, <code class="docutils literal notranslate"><span class="pre">reset_noise_scale</span></code>] is added to the initial state for stochasticity.</p>
+<p>The initial position state is $\mathcal{U}<em>{[-reset_noise_scale \times 1</em>{5}, reset_noise_scale \times 1_{5}]}$.
+The initial velocity state is $\mathcal{U}<em>{[-reset_noise_scale \times 1</em>{5}, reset_noise_scale \times 1_{5}]}$.</p>
+<p>where $\mathcal{U}$ is the multivariate uniform continuous distribution.</p>
 </section>
 <section id="episode-end">
 <h2>Episode End<a class="headerlink" href="#episode-end" title="Link to this heading">#</a></h2>
-<p>The episode truncates when the episode length is greater than 1000.</p>
+<section id="termination">
+<h3>Termination<a class="headerlink" href="#termination" title="Link to this heading">#</a></h3>
+<p>The Swimmer never terminates.</p>
+</section>
+<section id="truncation">
+<h3>Truncation<a class="headerlink" href="#truncation" title="Link to this heading">#</a></h3>
+<p>The default duration of an episode is 1000 timesteps</p>
+</section>
 </section>
 <section id="arguments">
 <h2>Arguments<a class="headerlink" href="#arguments" title="Link to this heading">#</a></h2>
-<p>No additional arguments are currently supported in v2 and lower.</p>
+<p>Swimmer provides a range of parameters to modify the observation space, reward function, initial state, and termination condition.
+These parameters can be applied during <code class="docutils literal notranslate"><span class="pre">gymnasium.make</span></code> in the following way:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
-<span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Swimmer-v4&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>v3 and v4 take <code class="docutils literal notranslate"><span class="pre">gymnasium.make</span></code> kwargs such as <code class="docutils literal notranslate"><span class="pre">xml_file</span></code>, <code class="docutils literal notranslate"><span class="pre">ctrl_cost_weight</span></code>, <code class="docutils literal notranslate"><span class="pre">reset_noise_scale</span></code>, etc.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
-<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Swimmer-v4&#39;</span><span class="p">,</span> <span class="n">ctrl_cost_weight</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="o">....</span><span class="p">)</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Swimmer-v5&#39;</span><span class="p">,</span> <span class="n">xml_file</span><span class="o">=...</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="table-wrapper colwidths-auto docutils container">
@@ -719,7 +754,7 @@ control and has a default value of 1e-4</p></li>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">forward_reward_weight</span></code></p></td>
 <td><p><strong>float</strong></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">1.0</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1</span></code></p></td>
 <td><p>Weight for <em>forward_reward</em> term (see section on reward)</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ctrl_cost_weight</span></code></p></td>
@@ -744,9 +779,24 @@ control and has a default value of 1e-4</p></li>
 <section id="version-history">
 <h2>Version History<a class="headerlink" href="#version-history" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p>v4: All MuJoCo environments now use the MuJoCo bindings in mujoco &gt;= 2.1.3</p></li>
-<li><p>v3: Support for <code class="docutils literal notranslate"><span class="pre">gymnasium.make</span></code> kwargs such as <code class="docutils literal notranslate"><span class="pre">xml_file</span></code>, <code class="docutils literal notranslate"><span class="pre">ctrl_cost_weight</span></code>, <code class="docutils literal notranslate"><span class="pre">reset_noise_scale</span></code>, etc. rgb rendering comes from tracking camera (so agent does not run away from screen)</p></li>
-<li><p>v2: All continuous control environments now use mujoco-py &gt;= 1.50</p></li>
+<li><p>v5:</p>
+<ul>
+<li><p>Minimum <code class="docutils literal notranslate"><span class="pre">mujoco</span></code> version is now 2.3.3.</p></li>
+<li><p>Added support for fully custom/third party <code class="docutils literal notranslate"><span class="pre">mujoco</span></code> models using the <code class="docutils literal notranslate"><span class="pre">xml_file</span></code> argument (previously only a few changes could be made to the existing models).</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">default_camera_config</span></code> argument, a dictionary for setting the <code class="docutils literal notranslate"><span class="pre">mj_camera</span></code> properties, mainly useful for custom environments.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">env.observation_structure</span></code>, a dictionary for specifying the observation space compose (e.g. <code class="docutils literal notranslate"><span class="pre">qpos</span></code>, <code class="docutils literal notranslate"><span class="pre">qvel</span></code>), useful for building tooling and wrappers for the MuJoCo environments.</p></li>
+<li><p>Return a non-empty <code class="docutils literal notranslate"><span class="pre">info</span></code> with <code class="docutils literal notranslate"><span class="pre">reset()</span></code>, previously an empty dictionary was returned, the new keys are the same state information as <code class="docutils literal notranslate"><span class="pre">step()</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">frame_skip</span></code> argument, used to configure the <code class="docutils literal notranslate"><span class="pre">dt</span></code> (duration of <code class="docutils literal notranslate"><span class="pre">step()</span></code>), default varies by environment check environment documentation pages.</p></li>
+<li><p>Restored the <code class="docutils literal notranslate"><span class="pre">xml_file</span></code> argument (was removed in <code class="docutils literal notranslate"><span class="pre">v4</span></code>).</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">forward_reward_weight</span></code>, <code class="docutils literal notranslate"><span class="pre">ctrl_cost_weight</span></code>, to configure the reward function (defaults are effectively the same as in <code class="docutils literal notranslate"><span class="pre">v4</span></code>).</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">reset_noise_scale</span></code> argument to set the range of initial states.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">exclude_current_positions_from_observation</span></code> argument.</p></li>
+<li><p>Replaced <code class="docutils literal notranslate"><span class="pre">info[&quot;reward_fwd&quot;]</span></code> and <code class="docutils literal notranslate"><span class="pre">info[&quot;forward_reward&quot;]</span></code> with <code class="docutils literal notranslate"><span class="pre">info[&quot;reward_forward&quot;]</span></code> to be consistent with the other environments.</p></li>
+</ul>
+</li>
+<li><p>v4: All MuJoCo environments now use the MuJoCo bindings in mujoco &gt;= 2.1.3.</p></li>
+<li><p>v3: Support for <code class="docutils literal notranslate"><span class="pre">gymnasium.make</span></code> kwargs such as <code class="docutils literal notranslate"><span class="pre">xml_file</span></code>, <code class="docutils literal notranslate"><span class="pre">ctrl_cost_weight</span></code>, <code class="docutils literal notranslate"><span class="pre">reset_noise_scale</span></code>, etc. rgb rendering comes from tracking camera (so agent does not run away from screen).</p></li>
+<li><p>v2: All continuous control environments now use mujoco-py &gt;= 1.50.</p></li>
 <li><p>v1: max_time_steps raised to 1000 for robot based tasks. Added reward_threshold to environments.</p></li>
 <li><p>v0: Initial versions release (1.0.0)</p></li>
 </ul>
@@ -829,7 +879,11 @@ control and has a default value of 1e-4</p></li>
 <li><a class="reference internal" href="#observation-space">Observation Space</a></li>
 <li><a class="reference internal" href="#rewards">Rewards</a></li>
 <li><a class="reference internal" href="#starting-state">Starting State</a></li>
-<li><a class="reference internal" href="#episode-end">Episode End</a></li>
+<li><a class="reference internal" href="#episode-end">Episode End</a><ul>
+<li><a class="reference internal" href="#termination">Termination</a></li>
+<li><a class="reference internal" href="#truncation">Truncation</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#arguments">Arguments</a></li>
 <li><a class="reference internal" href="#version-history">Version History</a></li>
 </ul>
@@ -918,7 +972,7 @@ control and has a default value of 1e-4</p></li>
         })()
       </script>
 
-    <script src="../../../_static/documentation_options.js?v=23ffd8e7"></script>
+    <script src="../../../_static/documentation_options.js?v=cecadf6f"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=7660844c"></script>
