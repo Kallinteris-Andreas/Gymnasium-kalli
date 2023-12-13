@@ -828,30 +828,30 @@ same as human joints.</p>
 <li><p><em>reward_near</em>:
 This reward is a measure of how far the <em>fingertip</em> of the pusher (the unattached end) is from the object,
 with a more negative value assigned for when the pusher’s <em>fingertip</em> is further away from the target.
-It is $-w_{near} |(P_{fingertip} - P_{target})|<em>2$.
-where $w</em>{near}$ is the <code class="docutils literal notranslate"><span class="pre">reward_near_weight</span></code>.</p></li>
+It is {math} <code class="docutils literal notranslate"><span class="pre">-w_{near}</span> <span class="pre">\|(P_{fingertip}</span> <span class="pre">-</span> <span class="pre">P_{target})\|_2</span></code>.
+where {math} <code class="docutils literal notranslate"><span class="pre">w_{near}</span></code> is the <code class="docutils literal notranslate"><span class="pre">reward_near_weight</span></code>.</p></li>
 <li><p><em>reward_dist</em>:
 This reward is a measure of how far the object is from the target goal position,
 with a more negative value assigned if the object that is further away from the target.
-It is $-w_{dist} |(P_{object} - P_{target})|<em>2$.
-where $w</em>{dist}$ is the <code class="docutils literal notranslate"><span class="pre">reward_dist_weight</span></code>.</p></li>
+It is {math} <code class="docutils literal notranslate"><span class="pre">-w_{dist}</span> <span class="pre">\|(P_{object}</span> <span class="pre">-</span> <span class="pre">P_{target})\|_2</span></code>.
+where {math} <code class="docutils literal notranslate"><span class="pre">w_{dist}</span></code> is the <code class="docutils literal notranslate"><span class="pre">reward_dist_weight</span></code>.</p></li>
 <li><p><em>reward_control</em>:
 A negative reward to penalize the pusher for taking actions that are too large.
-It is measured as the negative squared Euclidean norm of the action, i.e. as $-w_{control} |action|<em>2^2$.
-where $w</em>{control}$ is the <code class="docutils literal notranslate"><span class="pre">reward_control_weight</span></code>.</p></li>
+It is measured as the negative squared Euclidean norm of the action, i.e. as {math} <code class="docutils literal notranslate"><span class="pre">-w_{control}</span> <span class="pre">\|action\|_2^2</span></code>.
+where {math} <code class="docutils literal notranslate"><span class="pre">w_{control}</span></code> is the <code class="docutils literal notranslate"><span class="pre">reward_control_weight</span></code>.</p></li>
 </ul>
 <p><code class="docutils literal notranslate"><span class="pre">info</span></code> contains the individual reward terms.</p>
 </section>
 <section id="starting-state">
 <h2>Starting State<a class="headerlink" href="#starting-state" title="Link to this heading">#</a></h2>
-<p>The initial position state of the Pusher arm is $0_{6}$.
-The initial position state of the object is $\mathcal{U}<em>{[[-0.3, -0.2], [0, 0.2]]}$.
-The position state of the goal is (permanently) $[0.45, -0.05, -0.323]$.
-The initial velocity state of the Pusher arm is $\mathcal{U}</em>{[-0.005 \times 1_{6}, 0.005 \times 1_{6}]}$.
-The initial velocity state of the object is $0_2$.
-The velocity state of the goal is (permanently) $0_3$.</p>
-<p>where $\mathcal{U}$ is the multivariate uniform continuous distribution.</p>
-<p>Note that the initial position state of the object is sampled until it’s distance to the goal is $ &gt; 0.17 m$.</p>
+<p>The initial position state of the Pusher arm is {math} <code class="docutils literal notranslate"><span class="pre">0_{6}</span></code>.
+The initial position state of the object is {math} <code class="docutils literal notranslate"><span class="pre">\mathcal{U}_{[[-0.3,</span> <span class="pre">-0.2],</span> <span class="pre">[0,</span> <span class="pre">0.2]]}</span></code>.
+The position state of the goal is (permanently) {math} <code class="docutils literal notranslate"><span class="pre">[0.45,</span> <span class="pre">-0.05,</span> <span class="pre">-0.323]</span></code>.
+The initial velocity state of the Pusher arm is {math} <code class="docutils literal notranslate"><span class="pre">\mathcal{U}_{[-0.005</span> <span class="pre">\times</span> <span class="pre">1_{6},</span> <span class="pre">0.005</span> <span class="pre">\times</span> <span class="pre">1_{6}]}</span></code>.
+The initial velocity state of the object is {math} <code class="docutils literal notranslate"><span class="pre">0_2</span></code>.
+The velocity state of the goal is (permanently) {math} <code class="docutils literal notranslate"><span class="pre">0_3</span></code>.</p>
+<p>where {math} <code class="docutils literal notranslate"><span class="pre">\mathcal{U}</span></code> is the multivariate uniform continuous distribution.</p>
+<p>Note that the initial position state of the object is sampled until it’s distance to the goal is {math} <code class="docutils literal notranslate"> <span class="pre">&gt;</span> <span class="pre">0.17</span> <span class="pre">m</span></code>.</p>
 <p>The default frame rate is 5, with each frame lasting for 0.01, so <em>dt = 5 * 0.01 = 0.05</em>.</p>
 </section>
 <section id="episode-end">
