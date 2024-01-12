@@ -502,36 +502,6 @@
 The environment aims to increase the number of independent state and control variables compared to classical control environments.
 The hopper is a two-dimensional one-legged figure consisting of four main body parts - the torso at the top, the thigh in the middle, the leg at the bottom, and a single foot on which the entire body rests.
 The goal is to make hops that move in the forward (right) direction by applying torque to the three hinges that connect the four body parts.</p>
-<p>Gymnasium includes the following versions of the environment:</p>
-<div class="table-wrapper colwidths-auto docutils container">
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>Environment</p></th>
-<th class="head"><p>Binding</p></th>
-<th class="head"><p>Notes</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>Hopper-v5</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">mujoco=&gt;2.3.3</span></code></p></td>
-<td><p>Recommended (most features, the least bugs)</p></td>
-</tr>
-<tr class="row-odd"><td><p>Hopper-v4</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">mujoco=&gt;2.1.3</span></code></p></td>
-<td><p>Maintained for reproducibility</p></td>
-</tr>
-<tr class="row-even"><td><p>Hopper-v3</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">mujoco-py</span></code></p></td>
-<td><p>Maintained for reproducibility</p></td>
-</tr>
-<tr class="row-odd"><td><p>Hopper-v2</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">mujoco-py</span></code></p></td>
-<td><p>Maintained for reproducibility</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>For more information see section “Version History”.</p>
 </section>
 <section id="action-space">
 <h2>Action Space<a class="headerlink" href="#action-space" title="Link to this heading">#</a></h2>
@@ -792,7 +762,7 @@ These parameters can be applied during <code class="docutils literal notranslate
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">terminate_when_unhealthy</span></code></p></td>
 <td><p><strong>bool</strong></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">True</span></code></p></td>
-<td><p>If <code class="docutils literal notranslate"><span class="pre">True</span></code>, issue a terminate signal is unhealthy (see <code class="docutils literal notranslate"><span class="pre">Episode</span> <span class="pre">End</span></code> section)</p></td>
+<td><p>If <code class="docutils literal notranslate"><span class="pre">True</span></code>, issue a <code class="docutils literal notranslate"><span class="pre">terminated</span></code> signal is unhealthy (see <code class="docutils literal notranslate"><span class="pre">Episode</span> <span class="pre">End</span></code> section)</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">healthy_state_range</span></code></p></td>
 <td><p><strong>tuple</strong></p></td>

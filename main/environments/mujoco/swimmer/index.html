@@ -514,39 +514,8 @@ Problem parameters:</p>
 <li><p><em>l<sub>i</sub></em>: length of part <em>i</em> (<em>i</em> ∈ {1…n})</p></li>
 <li><p><em>k</em>: viscous-friction coefficient</p></li>
 </ul>
-<p>While the default environment has <em>n</em> = 3, <em>l<sub>i</sub></em> = 0.1,
-and <em>k</em> = 0.1. It is possible to pass a custom MuJoCo XML file during construction to increase the
-number of links, or to tweak any of the parameters.</p>
-<p>Gymnasium includes the following versions of the environment:</p>
-<div class="table-wrapper colwidths-auto docutils container">
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>Environment</p></th>
-<th class="head"><p>Binding</p></th>
-<th class="head"><p>Notes</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>Swimmer-v5</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">mujoco=&gt;2.3.3</span></code></p></td>
-<td><p>Recommended (most features, the least bugs)</p></td>
-</tr>
-<tr class="row-odd"><td><p>Swimmer-v4</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">mujoco=&gt;2.1.3</span></code></p></td>
-<td><p>Maintained for reproducibility</p></td>
-</tr>
-<tr class="row-even"><td><p>Swimmer-v3</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">mujoco-py</span></code></p></td>
-<td><p>Maintained for reproducibility</p></td>
-</tr>
-<tr class="row-odd"><td><p>Swimmer-v2</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">mujoco-py</span></code></p></td>
-<td><p>Maintained for reproducibility</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>For more information see section “Version History”.</p>
+<p>While the default environment has <em>n</em> = 3, <em>l<sub>i</sub></em> = 0.1, and <em>k</em> = 0.1.
+It is possible to pass a custom MuJoCo XML file during construction to increase the number of links, or to tweak any of the parameters.</p>
 </section>
 <section id="action-space">
 <h2>Action Space<a class="headerlink" href="#action-space" title="Link to this heading">#</a></h2>
