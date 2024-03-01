@@ -232,7 +232,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../api/spaces/fundamental/">Fundamental Spaces</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/spaces/composite/">Composite Spaces</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/spaces/utils/">Spaces Utils</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../api/vector/utils/">Utility functions</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../api/wrappers/">Wrappers</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Wrappers</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -505,13 +504,15 @@ where action represents the numerical force applied to the cart
 <p>An explanation of the Gymnasium v0.26+ <cite>Env.step()</cite> function</p>
 <p><code class="docutils literal notranslate"><span class="pre">env.step(A)</span></code> allows us to take an action ‘A’ in the current environment ‘env’. The environment then executes the action
 and returns five variables:</p>
-<ul class="simple">
+<blockquote>
+<div><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">next_obs</span></code>: This is the observation that the agent will receive after taking the action.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">reward</span></code>: This is the reward that the agent will receive after taking the action.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">terminated</span></code>: This is a boolean variable that indicates whether or not the environment has terminated.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">truncated</span></code>: This is a boolean variable that also indicates whether the episode ended by early truncation, i.e., a time limit is reached.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">info</span></code>: This is a dictionary that might contain additional information about the environment.</p></li>
 </ul>
+</div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
 <span class="kn">import</span> <span class="nn">random</span>
@@ -945,7 +946,7 @@ algorithms for connectionist reinforcement learning.” Machine Learning 8
         })()
       </script>
 
-    <script src="../../../_static/documentation_options.js?v=a4d19d35"></script>
+    <script src="../../../_static/documentation_options.js?v=ed34540e"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=7660844c"></script>

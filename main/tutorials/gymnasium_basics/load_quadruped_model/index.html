@@ -7,12 +7,12 @@
     <meta property="og:title" content="Gymnasium Documentation" />
     <meta property="og:type" content="website" />
     <meta property="og:description" content="A standard API for reinforcement learning and a diverse set of reference environments (formerly Gym)" />
-    <meta property="og:url" content="https://gymnasium.farama.org/api/vector/sync_vector_env.html" /><meta property="og:image" content="https://gymnasium.farama.org/_static/img/gymnasium-github.png" /><meta name="twitter:card" content="summary_large_image"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../../../genindex/" /><link rel="search" title="Search" href="../../../search/" /><link rel="next" title="Utility functions" href="../utils/" /><link rel="prev" title="AsyncVectorEnv" href="../async_vector_env/" />
-        <link rel="canonical" href="https://gymnasium.farama.org/api/vector/sync_vector_env.html" />
+    <meta property="og:url" content="https://gymnasium.farama.org/tutorials/gymnasium_basics/load_quadruped_model.html" /><meta property="og:image" content="https://gymnasium.farama.org/_static/img/gymnasium-github.png" /><meta name="twitter:card" content="summary_large_image"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../../genindex/" /><link rel="search" title="Search" href="../../../search/" />
+        <link rel="canonical" href="https://gymnasium.farama.org/tutorials/gymnasium_basics/load_quadruped_model.html" />
 
     <link rel="shortcut icon" href="../../../_static/favicon.png"/><!-- Generated with Sphinx 7.2.6 and Furo 2023.08.19.dev1 -->
-        <title>SyncVectorEnv - Gymnasium Documentation</title>
+        <title>Load custom quadruped robot environments - Gymnasium Documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=3e7f4c72" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=61a4c737" />
@@ -225,32 +225,32 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../introduction/migration_guide/">Migration Guide - v0.21 to v1.0.0</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../env/">Env</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../registry/">Make and register</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../spaces/">Spaces</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Spaces</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../spaces/fundamental/">Fundamental Spaces</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../spaces/composite/">Composite Spaces</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../spaces/utils/">Spaces Utils</a></li>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/env/">Env</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/registry/">Make and register</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../api/spaces/">Spaces</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Spaces</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/spaces/fundamental/">Fundamental Spaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/spaces/composite/">Composite Spaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/spaces/utils/">Spaces Utils</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../wrappers/">Wrappers</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Wrappers</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../wrappers/table/">List of Wrappers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../wrappers/misc_wrappers/">Misc Wrappers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../wrappers/action_wrappers/">Action Wrappers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../wrappers/observation_wrappers/">Observation Wrappers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../wrappers/reward_wrappers/">Reward Wrappers</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../api/wrappers/">Wrappers</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Wrappers</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/wrappers/table/">List of Wrappers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/wrappers/misc_wrappers/">Misc Wrappers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/wrappers/action_wrappers/">Action Wrappers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/wrappers/observation_wrappers/">Observation Wrappers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/wrappers/reward_wrappers/">Reward Wrappers</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current has-children"><a class="reference internal" href="../">Vectorize</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Vectorize</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../wrappers/">Wrappers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../async_vector_env/">AsyncVectorEnv</a></li>
-<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">SyncVectorEnv</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../utils/">Utility functions</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../api/vector/">Vectorize</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Vectorize</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/vector/wrappers/">Wrappers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/vector/async_vector_env/">AsyncVectorEnv</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/vector/sync_vector_env/">SyncVectorEnv</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/vector/utils/">Utility functions</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../utils/">Utility functions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../functional/">Functional Env</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/utils/">Utility functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/functional/">Functional Env</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Environments</span></p>
 <ul>
@@ -400,20 +400,20 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../../tutorials/gymnasium_basics/">Gymnasium Basics</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of Gymnasium Basics</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../tutorials/gymnasium_basics/handling_time_limits/">Handling Time Limits</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../tutorials/gymnasium_basics/implementing_custom_wrappers/">Implementing Custom Wrappers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../tutorials/gymnasium_basics/environment_creation/">Make your own custom environment</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../tutorials/gymnasium_basics/vector_envs_tutorial/">Training A2C with Vector Envs and Domain Randomization</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../">Gymnasium Basics</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of Gymnasium Basics</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../handling_time_limits/">Handling Time Limits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../implementing_custom_wrappers/">Implementing Custom Wrappers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../environment_creation/">Make your own custom environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vector_envs_tutorial/">Training A2C with Vector Envs and Domain Randomization</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../../tutorials/training_agents/">Training Agents</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of Training Agents</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../tutorials/training_agents/reinforce_invpend_gym_v26/">Training using REINFORCE for Mujoco</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../tutorials/training_agents/blackjack_tutorial/">Solving Blackjack with Q-Learning</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../tutorials/training_agents/FrozenLake_tuto/">Frozenlake benchmark</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../training_agents/">Training Agents</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of Training Agents</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../training_agents/reinforce_invpend_gym_v26/">Training using REINFORCE for Mujoco</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../training_agents/blackjack_tutorial/">Solving Blackjack with Q-Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../training_agents/FrozenLake_tuto/">Frozenlake benchmark</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/third-party-tutorials/">Third-Party Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../third-party-tutorials/">Third-Party Tutorials</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://www.comet.com/docs/v2/integrations/ml-frameworks/gymnasium/?utm_source=gymnasium&amp;utm_medium=partner&amp;utm_campaign=partner_gymnasium_2023&amp;utm_content=docs_gymnasium">Comet Tutorial</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Development</span></p>
@@ -446,8 +446,9 @@
             </svg>
             <span>Back to top</span>
           </a>
-          <div class="content-icon-container"><div class="edit-this-page">
-  <a class="muted-link" href="https://github.com/Farama-Foundation/Gymnasium/edit/main/docs/api/vector/sync_vector_env.md" title="Edit this page">
+          <div class="content-icon-container">
+      <div class="edit-this-page">
+  <a class="muted-link" href="https://github.com/Farama-Foundation/Gymnasium/edit/main/docs/tutorials/gymnasium_basics/load_quadruped_model.py" title="Edit this page">
     <svg aria-hidden="true" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
       <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
       <path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4" />
@@ -478,191 +479,213 @@
           </div>
           <article role="main">
             
-            <section class="tex2jax_ignore mathjax_ignore" id="syncvectorenv">
-<h1>SyncVectorEnv<a class="headerlink" href="#syncvectorenv" title="Link to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="gymnasium.vector.SyncVectorEnv">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gymnasium.vector.</span></span><span class="sig-name descname"><span class="pre">SyncVectorEnv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env_fns</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterator</span><span class="p"><span class="pre">[</span></span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../../env/#gymnasium.Env" title="gymnasium.Env"><span class="pre">Env</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="../../spaces/composite/#gymnasium.spaces.Sequence" title="gymnasium.spaces.Sequence"><span class="pre">Sequence</span></a><span class="p"><span class="pre">[</span></span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../../env/#gymnasium.Env" title="gymnasium.Env"><span class="pre">Env</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/gymnasium/vector/sync_vector_env/#SyncVectorEnv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gymnasium.vector.SyncVectorEnv" title="Link to this definition">#</a></dt>
-<dd><p>Vectorized environment that serially runs multiple environments.</p>
-<p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">envs</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make_vec</span><span class="p">(</span><span class="s2">&quot;Pendulum-v1&quot;</span><span class="p">,</span> <span class="n">num_envs</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">vectorization_mode</span><span class="o">=</span><span class="s2">&quot;sync&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">envs</span>
-<span class="go">SyncVectorEnv(Pendulum-v1, num_envs=2)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">envs</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">vector</span><span class="o">.</span><span class="n">SyncVectorEnv</span><span class="p">([</span>
-<span class="gp">... </span>    <span class="k">lambda</span><span class="p">:</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;Pendulum-v1&quot;</span><span class="p">,</span> <span class="n">g</span><span class="o">=</span><span class="mf">9.81</span><span class="p">),</span>
-<span class="gp">... </span>    <span class="k">lambda</span><span class="p">:</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;Pendulum-v1&quot;</span><span class="p">,</span> <span class="n">g</span><span class="o">=</span><span class="mf">1.62</span><span class="p">)</span>
-<span class="gp">... </span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">envs</span>
-<span class="go">SyncVectorEnv(num_envs=2)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">obs</span><span class="p">,</span> <span class="n">infos</span> <span class="o">=</span> <span class="n">envs</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">obs</span>
-<span class="go">array([[-0.14995256,  0.9886932 , -0.12224312],</span>
-<span class="go">       [ 0.5760367 ,  0.8174238 , -0.91244936]], dtype=float32)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">infos</span>
-<span class="go">{}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">_</span> <span class="o">=</span> <span class="n">envs</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">actions</span> <span class="o">=</span> <span class="n">envs</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">obs</span><span class="p">,</span> <span class="n">rewards</span><span class="p">,</span> <span class="n">terminates</span><span class="p">,</span> <span class="n">truncates</span><span class="p">,</span> <span class="n">infos</span> <span class="o">=</span> <span class="n">envs</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">actions</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">obs</span>
-<span class="go">array([[-0.1878752 ,  0.98219293,  0.7695615 ],</span>
-<span class="go">       [ 0.6102389 ,  0.79221743, -0.8498053 ]], dtype=float32)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">rewards</span>
-<span class="go">array([-2.96562607, -0.99902063])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">terminates</span>
-<span class="go">array([False, False])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">truncates</span>
-<span class="go">array([False, False])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">infos</span>
-<span class="go">{}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">envs</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <section class="tex2jax_ignore mathjax_ignore" id="load-custom-quadruped-robot-environments">
+<h1>Load custom quadruped robot environments<a class="headerlink" href="#load-custom-quadruped-robot-environments" title="Link to this heading">#</a></h1>
+<p>In this tutorial we will see how to use the <code class="docutils literal notranslate"><span class="pre">MuJoCo/Ant-v5</span></code> framework to create a quadruped walking environment, using a model file (ending in <code class="docutils literal notranslate"><span class="pre">.xml</span></code>) without having to create a new class.</p>
+<p>Steps:</p>
+<ol class="arabic simple" start="0">
+<li><p>Get your <strong>MJCF</strong> (or <strong>URDF</strong>) model file of your robot.</p>
+<ul class="simple">
+<li><p>Create your own model (see the <a class="reference external" href="https://mujoco.readthedocs.io/en/stable/m22odeling.html">Guide</a>) or,</p></li>
+<li><p>Find a ready-made model (in this tutorial, we will use a model from the <a class="reference external" href="https://github.com/google-deepmind/mujoco_menagerie"><strong>MuJoCo Menagerie</strong></a> collection).</p></li>
+</ul>
+</li>
+<li><p>Load the model with the <code class="docutils literal notranslate"><span class="pre">xml_file</span></code> argument.</p></li>
+<li><p>Tweak the environment parameters to get the desired behavior.</p>
+<ol class="arabic simple">
+<li><p>Tweak the environment simulation parameters.</p></li>
+<li><p>Tweak the environment termination parameters.</p></li>
+<li><p>Tweak the environment reward parameters.</p></li>
+<li><p>Tweak the environment observation parameters.</p></li>
+</ol>
+</li>
+<li><p>Train an agent to move your robot.</p></li>
+</ol>
+<p>The reader is expected to be familiar with the <code class="docutils literal notranslate"><span class="pre">Gymnasium</span></code> API &amp; library, the basics of robotics, and the included <code class="docutils literal notranslate"><span class="pre">Gymnasium/MuJoCo</span></code> environments with the robot model they use. Familiarity with the <strong>MJCF</strong> file model format and the <code class="docutils literal notranslate"><span class="pre">MuJoCo</span></code> simulator is not required but is recommended.</p>
+<section id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Link to this heading">#</a></h2>
+<p>We will need <code class="docutils literal notranslate"><span class="pre">gymnasium&gt;=1.0.0</span></code>.</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;gymnasium&gt;=1.0.0&quot;</span>
 </pre></div>
 </div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>env_fns</strong> – iterable of callable functions that create the environments.</p></li>
-<li><p><strong>copy</strong> – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, then the <a class="reference internal" href="#gymnasium.vector.SyncVectorEnv.reset" title="gymnasium.vector.SyncVectorEnv.reset"><code class="xref py py-meth docutils literal notranslate"><span class="pre">reset()</span></code></a> and <a class="reference internal" href="#gymnasium.vector.SyncVectorEnv.step" title="gymnasium.vector.SyncVectorEnv.step"><code class="xref py py-meth docutils literal notranslate"><span class="pre">step()</span></code></a> methods return a copy of the observations.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>RuntimeError</strong> – If the observation space of some sub-environment does not match observation_space
-    (or, by default, the observation space of the first sub-environment).</p>
-</dd>
-</dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="gymnasium.vector.SyncVectorEnv.reset">
-<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ObsType</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/gymnasium/vector/sync_vector_env/#SyncVectorEnv.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gymnasium.vector.SyncVectorEnv.reset" title="Link to this definition">#</a></dt>
-<dd><p>Resets each of the sub-environments and concatenate the results together.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>seed</strong> – Seeds used to reset the sub-environments, either
-* <code class="docutils literal notranslate"><span class="pre">None</span></code> - random seeds for all environment
-* <code class="docutils literal notranslate"><span class="pre">int</span></code> - <code class="docutils literal notranslate"><span class="pre">[seed,</span> <span class="pre">seed+1,</span> <span class="pre">...,</span> <span class="pre">seed+n]</span></code>
-* List of ints - <code class="docutils literal notranslate"><span class="pre">[1,</span> <span class="pre">2,</span> <span class="pre">3,</span> <span class="pre">...,</span> <span class="pre">n]</span></code></p></li>
-<li><p><strong>options</strong> – Option information used for each sub-environment</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>Concatenated observations and info from each sub-environment</strong></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="gymnasium.vector.SyncVectorEnv.step">
-<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">actions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ActType</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ObsType</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ArrayType</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ArrayType</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ArrayType</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/gymnasium/vector/sync_vector_env/#SyncVectorEnv.step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gymnasium.vector.SyncVectorEnv.step" title="Link to this definition">#</a></dt>
-<dd><p>Steps through each of the environments returning the batched results.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>The batched environment step results</strong></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="gymnasium.vector.SyncVectorEnv.close">
-<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gymnasium.vector.SyncVectorEnv.close" title="Link to this definition">#</a></dt>
-<dd><p>Close all parallel environments and release resources.</p>
-<p>It also closes all the existing image viewers, then calls <code class="xref py py-meth docutils literal notranslate"><span class="pre">close_extras()</span></code> and set
-<code class="xref py py-attr docutils literal notranslate"><span class="pre">closed</span></code> as <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>This function itself does not close the environments, it should be handled
-in <code class="xref py py-meth docutils literal notranslate"><span class="pre">close_extras()</span></code>. This is generic for both synchronous and asynchronous
-vectorized environments.</p>
+</section>
+<section id="step-0-1-download-a-robot-model">
+<h2>Step 0.1 - Download a Robot Model<a class="headerlink" href="#step-0-1-download-a-robot-model" title="Link to this heading">#</a></h2>
+<p>In this tutorial we will load the <a class="reference external" href="https://github.com/google-deepmind/mujoco_menagerie/blob/main/unitree_go1/README.md">Unitree Go1</a> robot from the excellent <a class="reference external" href="https://github.com/google-deepmind/mujoco_menagerie">MuJoCo Menagerie</a> robot model collection.
+<img alt="Unitree Go1 robot in a flat terrain scene" src="https://github.com/google-deepmind/mujoco_menagerie/blob/main/unitree_go1/go1.png?raw=true" /></p>
+<p><code class="docutils literal notranslate"><span class="pre">Go1</span></code> is a quadruped robot, controlling it to move is a significant learning problem, much harder than the <code class="docutils literal notranslate"><span class="pre">Gymnasium/MuJoCo/Ant</span></code> environment.</p>
+<p>We can download the whole MuJoCo Menagerie collection (which includes <code class="docutils literal notranslate"><span class="pre">Go1</span></code>),</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/google-deepmind/mujoco_menagerie.git
+</pre></div>
 </div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This will be automatically called when garbage collected or program exited.</p>
+<p>You can use any other quadruped robot with this tutorial, just adjust the environment parameter values for your robot.</p>
+</section>
+<section id="step-1-load-the-model">
+<h2>Step 1 - Load the model<a class="headerlink" href="#step-1-load-the-model" title="Link to this heading">#</a></h2>
+<p>To load the model, all we have to do is use the <code class="docutils literal notranslate"><span class="pre">xml_file</span></code> argument with the <code class="docutils literal notranslate"><span class="pre">Ant-v5</span></code> framework.</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gymnasium</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">gymnasium</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;Ant-v5&#39;</span><span class="p">,</span> <span class="n">xml_file</span><span class="o">=</span><span class="s1">&#39;./mujoco_menagerie/unitree_go1/scene.xml&#39;</span><span class="p">)</span>
+</pre></div>
 </div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>**kwargs</strong> – Keyword arguments passed to <code class="xref py py-meth docutils literal notranslate"><span class="pre">close_extras()</span></code></p>
-</dd>
-</dl>
-</dd></dl>
+<p>Although this is enough to load the model, we will need to tweak some environment parameters to get the desired behavior for our environment, for now we will also explicitly set the simulation, termination, reward and observation arguments, which we will tweak in the next step.</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="n">env</span> <span class="o">=</span> <span class="n">gymnasium</span><span class="o">.</span><span class="n">make</span><span class="p">(</span>
+    <span class="s1">&#39;Ant-v5&#39;</span><span class="p">,</span>
+    <span class="n">xml_file</span><span class="o">=</span><span class="s1">&#39;./mujoco_menagerie/unitree_go1/scene.xml&#39;</span><span class="p">,</span>
+    <span class="n">forward_reward_weight</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">ctrl_cost_weight</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">contact_cost_weight</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">healthy_reward</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">main_body</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">healthy_z_range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">),</span>
+    <span class="n">include_cfrc_ext_in_observation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">exclude_current_positions_from_observation</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">reset_noise_scale</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">frame_skip</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">max_episode_steps</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="step-2-tweaking-the-environment-parameters">
+<h2>Step 2 - Tweaking the Environment Parameters<a class="headerlink" href="#step-2-tweaking-the-environment-parameters" title="Link to this heading">#</a></h2>
+<p>Tweaking the environment parameters is essential to get the desired behavior for learning.
+In the following subsections, the reader is encouraged to consult the <a class="reference external" href="https://gymnasium.farama.org/main/environments/mujoco/ant/#arguments">documentation of the arguments</a> for more detailed information.</p>
+</section>
+<section id="step-2-1-tweaking-the-environment-simulation-parameters">
+<h2>Step 2.1 - Tweaking the Environment Simulation Parameters<a class="headerlink" href="#step-2-1-tweaking-the-environment-simulation-parameters" title="Link to this heading">#</a></h2>
+<p>The arguments of interest are <code class="docutils literal notranslate"><span class="pre">frame_skip</span></code>, <code class="docutils literal notranslate"><span class="pre">reset_noise_scale</span></code> and <code class="docutils literal notranslate"><span class="pre">max_episode_steps</span></code>.</p>
+<p>We want to tweak the <code class="docutils literal notranslate"><span class="pre">frame_skip</span></code> parameter to get <code class="docutils literal notranslate"><span class="pre">dt</span></code> to an acceptable value (typical values are <code class="docutils literal notranslate"><span class="pre">dt</span></code> <span class="math notranslate nohighlight">\(\in [0.01, 0.1]\)</span> seconds),</p>
+<p>Reminder: <span class="math notranslate nohighlight">\(dt = frame\_skip \times model.opt.timestep\)</span>, where <code class="docutils literal notranslate"><span class="pre">model.opt.timestep</span></code> is the integrator time step selected in the MJCF model file.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Go1</span></code> model we are using has an integrator timestep of <code class="docutils literal notranslate"><span class="pre">0.002</span></code>, so by selecting <code class="docutils literal notranslate"><span class="pre">frame_skip=25</span></code> we can set the value of <code class="docutils literal notranslate"><span class="pre">dt</span></code> to <code class="docutils literal notranslate"><span class="pre">0.05s</span></code>.</p>
+<p>To avoid overfitting the policy, <code class="docutils literal notranslate"><span class="pre">reset_noise_scale</span></code> should be set to a value appropriate to the size of the robot, we want the value to be as large as possible without the initial distribution of states being invalid (<code class="docutils literal notranslate"><span class="pre">Terminal</span></code> regardless of control actions), for <code class="docutils literal notranslate"><span class="pre">Go1</span></code> we choose a value of <code class="docutils literal notranslate"><span class="pre">0.1</span></code>.</p>
+<p>And <code class="docutils literal notranslate"><span class="pre">max_episode_steps</span></code> determines the number of steps per episode before <code class="docutils literal notranslate"><span class="pre">truncation</span></code>, here we set it to 1000 to be consistent with the based <code class="docutils literal notranslate"><span class="pre">Gymnasium/MuJoCo</span></code> environments, but if you need something higher you can set it so.</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="n">env</span> <span class="o">=</span> <span class="n">gymnasium</span><span class="o">.</span><span class="n">make</span><span class="p">(</span>
+    <span class="s1">&#39;Ant-v5&#39;</span><span class="p">,</span>
+    <span class="n">xml_file</span><span class="o">=</span><span class="s1">&#39;./mujoco_menagerie/unitree_go1/scene.xml&#39;</span><span class="p">,</span>
+    <span class="n">forward_reward_weight</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">ctrl_cost_weight</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">contact_cost_weight</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">healthy_reward</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">main_body</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">healthy_z_range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">),</span>
+    <span class="n">include_cfrc_ext_in_observation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">exclude_current_positions_from_observation</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">reset_noise_scale</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>  <span class="c1"># set to avoid policy overfitting</span>
+    <span class="n">frame_skip</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>  <span class="c1"># set dt=0.05</span>
+    <span class="n">max_episode_steps</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>  <span class="c1"># kept at 1000</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="step-2-2-tweaking-the-environment-termination-parameters">
+<h2>Step 2.2 - Tweaking the Environment Termination Parameters<a class="headerlink" href="#step-2-2-tweaking-the-environment-termination-parameters" title="Link to this heading">#</a></h2>
+<p>Termination is important for robot environments to avoid sampling “useless” time steps.</p>
+<p>The arguments of interest are <code class="docutils literal notranslate"><span class="pre">terminate_when_unhealthy</span></code> and <code class="docutils literal notranslate"><span class="pre">healthy_z_range</span></code>.</p>
+<p>We want to set <code class="docutils literal notranslate"><span class="pre">healthy_z_range</span></code> to terminate the environment when the robot falls over, or jumps really high, here we have to choose a value that is logical for the height of the robot, for <code class="docutils literal notranslate"><span class="pre">Go1</span></code> we choose <code class="docutils literal notranslate"><span class="pre">(0.195,</span> <span class="pre">0.75)</span></code>.
+Note: <code class="docutils literal notranslate"><span class="pre">healthy_z_range</span></code> checks the absolute value of the height of the robot, so if your scene contains different levels of elevation it should be set to <code class="docutils literal notranslate"><span class="pre">(-np.inf,</span> <span class="pre">np.inf)</span></code></p>
+<p>We could also set <code class="docutils literal notranslate"><span class="pre">terminate_when_unhealthy=False</span></code> to disable termination altogether, which is not desirable in the case of <code class="docutils literal notranslate"><span class="pre">Go1</span></code>.</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="n">env</span> <span class="o">=</span> <span class="n">gymnasium</span><span class="o">.</span><span class="n">make</span><span class="p">(</span>
+    <span class="s1">&#39;Ant-v5&#39;</span><span class="p">,</span>
+    <span class="n">xml_file</span><span class="o">=</span><span class="s1">&#39;./mujoco_menagerie/unitree_go1/scene.xml&#39;</span><span class="p">,</span>
+    <span class="n">forward_reward_weight</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">ctrl_cost_weight</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">contact_cost_weight</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">healthy_reward</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">main_body</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">healthy_z_range</span><span class="o">=</span><span class="p">(</span><span class="mf">0.195</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">),</span>  <span class="c1"># set to avoid sampling steps where the robot has fallen or jumped too high</span>
+    <span class="n">include_cfrc_ext_in_observation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">exclude_current_positions_from_observation</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">reset_noise_scale</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+    <span class="n">frame_skip</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
+    <span class="n">max_episode_steps</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Note: If you need a different termination condition, you can write your own <code class="docutils literal notranslate"><span class="pre">TerminationWrapper</span></code> (see the  <a class="reference external" href="https://gymnasium.farama.org/main/api/wrappers/">documentation</a>).</p>
+</section>
+<section id="step-2-3-tweaking-the-environment-reward-parameters">
+<h2>Step 2.3 - Tweaking the Environment Reward Parameters<a class="headerlink" href="#step-2-3-tweaking-the-environment-reward-parameters" title="Link to this heading">#</a></h2>
+<p>The arguments of interest are <code class="docutils literal notranslate"><span class="pre">forward_reward_weight</span></code>, <code class="docutils literal notranslate"><span class="pre">ctrl_cost_weight</span></code>, <code class="docutils literal notranslate"><span class="pre">contact_cost_weight</span></code>, <code class="docutils literal notranslate"><span class="pre">healthy_reward</span></code>, and <code class="docutils literal notranslate"><span class="pre">main_body</span></code>.</p>
+<p>For the arguments <code class="docutils literal notranslate"><span class="pre">forward_reward_weight</span></code>, <code class="docutils literal notranslate"><span class="pre">ctrl_cost_weight</span></code>, <code class="docutils literal notranslate"><span class="pre">contact_cost_weight</span></code> and <code class="docutils literal notranslate"><span class="pre">healthy_reward</span></code> we have to pick values that make sense for our robot, you can use the default <code class="docutils literal notranslate"><span class="pre">MuJoCo/Ant</span></code> parameters for references and tweak them if a change is needed for your environment. In the case of <code class="docutils literal notranslate"><span class="pre">Go1</span></code> we only change the <code class="docutils literal notranslate"><span class="pre">ctrl_cost_weight</span></code> since it has a higher actuator force range.</p>
+<p>For the argument <code class="docutils literal notranslate"><span class="pre">main_body</span></code> we have to choose which body part is the main body (usually called something like “torso” or “trunk” in the model file) for the calculation of the <code class="docutils literal notranslate"><span class="pre">forward_reward</span></code>, in the case of <code class="docutils literal notranslate"><span class="pre">Go1</span></code> it is the <code class="docutils literal notranslate"><span class="pre">&quot;trunk&quot;</span></code> (Note: in most cases including this one, it can be left at the default value).</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="n">env</span> <span class="o">=</span> <span class="n">gymnasium</span><span class="o">.</span><span class="n">make</span><span class="p">(</span>
+    <span class="s1">&#39;Ant-v5&#39;</span><span class="p">,</span>
+    <span class="n">xml_file</span><span class="o">=</span><span class="s1">&#39;./mujoco_menagerie/unitree_go1/scene.xml&#39;</span><span class="p">,</span>
+    <span class="n">forward_reward_weight</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>  <span class="c1"># kept the same as the &#39;Ant&#39; environment</span>
+    <span class="n">ctrl_cost_weight</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>  <span class="c1"># changed because of the stronger motors of `Go1`</span>
+    <span class="n">contact_cost_weight</span><span class="o">=</span><span class="mf">5e-4</span><span class="p">,</span>  <span class="c1"># kept the same as the &#39;Ant&#39; environment</span>
+    <span class="n">healthy_reward</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>  <span class="c1"># kept the same as the &#39;Ant&#39; environment</span>
+    <span class="n">main_body</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>  <span class="c1"># represents the &quot;trunk&quot; of the `Go1` robot</span>
+    <span class="n">healthy_z_range</span><span class="o">=</span><span class="p">(</span><span class="mf">0.195</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">),</span>
+    <span class="n">include_cfrc_ext_in_observation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">exclude_current_positions_from_observation</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">reset_noise_scale</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+    <span class="n">frame_skip</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
+    <span class="n">max_episode_steps</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Note: If you need a different reward function, you can write your own <code class="docutils literal notranslate"><span class="pre">RewardWrapper</span></code> (see the <a class="reference external" href="https://gymnasium.farama.org/main/api/wrappers/reward_wrappers/">documentation</a>).</p>
+</section>
+<section id="step-2-4-tweaking-the-environment-observation-parameters">
+<h2>Step 2.4 - Tweaking the Environment Observation Parameters<a class="headerlink" href="#step-2-4-tweaking-the-environment-observation-parameters" title="Link to this heading">#</a></h2>
+<p>The arguments of interest are <code class="docutils literal notranslate"><span class="pre">include_cfrc_ext_in_observation</span></code> and <code class="docutils literal notranslate"><span class="pre">exclude_current_positions_from_observation</span></code>.</p>
+<p>Here for <code class="docutils literal notranslate"><span class="pre">Go1</span></code> we have no particular reason to change them.</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="n">env</span> <span class="o">=</span> <span class="n">gymnasium</span><span class="o">.</span><span class="n">make</span><span class="p">(</span>
+    <span class="s1">&#39;Ant-v5&#39;</span><span class="p">,</span>
+    <span class="n">xml_file</span><span class="o">=</span><span class="s1">&#39;./mujoco_menagerie/unitree_go1/scene.xml&#39;</span><span class="p">,</span>
+    <span class="n">forward_reward_weight</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">ctrl_cost_weight</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+    <span class="n">contact_cost_weight</span><span class="o">=</span><span class="mf">5e-4</span><span class="p">,</span>
+    <span class="n">healthy_reward</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">main_body</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">healthy_z_range</span><span class="o">=</span><span class="p">(</span><span class="mf">0.195</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">),</span>
+    <span class="n">include_cfrc_ext_in_observation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># kept the game as the &#39;Ant&#39; environment</span>
+    <span class="n">exclude_current_positions_from_observation</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>  <span class="c1"># kept the game as the &#39;Ant&#39; environment</span>
+    <span class="n">reset_noise_scale</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+    <span class="n">frame_skip</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
+    <span class="n">max_episode_steps</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Note: If you need additional observation elements (such as additional sensors), you can write your own <code class="docutils literal notranslate"><span class="pre">ObservationWrapper</span></code> (see the <a class="reference external" href="https://gymnasium.farama.org/main/api/wrappers/observation_wrappers/">documentation</a>).</p>
+</section>
+<section id="step-3-train-your-agent">
+<h2>Step 3 - Train your Agent<a class="headerlink" href="#step-3-train-your-agent" title="Link to this heading">#</a></h2>
+<p>Finally, we are done, we can use a RL algorithm to train an agent to walk/run the <code class="docutils literal notranslate"><span class="pre">Go1</span></code> robot.
+Note: If you have followed this guide with your own robot model, you may discover during training that some environment parameters were not as desired, feel free to go back to step 2 and change anything as needed.</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gymnasium</span>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="gymnasium.vector.SyncVectorEnv.call">
-<span class="sig-name descname"><span class="pre">call</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/gymnasium/vector/sync_vector_env/#SyncVectorEnv.call"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gymnasium.vector.SyncVectorEnv.call" title="Link to this definition">#</a></dt>
-<dd><p>Calls a sub-environment method with name and applies args and kwargs.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – The method name</p></li>
-<li><p><strong>*args</strong> – The method args</p></li>
-<li><p><strong>**kwargs</strong> – The method kwargs</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>Tuple of results</strong></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="gymnasium.vector.SyncVectorEnv.get_attr">
-<span class="sig-name descname"><span class="pre">get_attr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/gymnasium/vector/sync_vector_env/#SyncVectorEnv.get_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gymnasium.vector.SyncVectorEnv.get_attr" title="Link to this definition">#</a></dt>
-<dd><p>Get a property from each parallel environment.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – Name of the property to get from each individual environment.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>The property with name</strong></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="gymnasium.vector.SyncVectorEnv.set_attr">
-<span class="sig-name descname"><span class="pre">set_attr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/gymnasium/vector/sync_vector_env/#SyncVectorEnv.set_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gymnasium.vector.SyncVectorEnv.set_attr" title="Link to this definition">#</a></dt>
-<dd><p>Sets an attribute of the sub-environments.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – The property name to change</p></li>
-<li><p><strong>values</strong> – Values of the property to be set to. If <code class="docutils literal notranslate"><span class="pre">values</span></code> is a list or
-tuple, then it corresponds to the values for each individual
-environment, otherwise, a single value is set for all environments.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> – Values must be a list or tuple with length equal to the number of environments.</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<section id="additional-methods">
-<h2>Additional Methods<a class="headerlink" href="#additional-methods" title="Link to this heading">#</a></h2>
-<dl class="py property">
-<dt class="sig sig-object py" id="gymnasium.vector.VectorEnv.np_random">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">VectorEnv.</span></span><span class="sig-name descname"><span class="pre">np_random</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Generator</span></em><a class="headerlink" href="#gymnasium.vector.VectorEnv.np_random" title="Link to this definition">#</a></dt>
-<dd><p>Returns the environment’s internal <code class="xref py py-attr docutils literal notranslate"><span class="pre">_np_random</span></code> that if not set will initialise with a random seed.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>Instances of `np.random.Generator`</strong></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="gymnasium.vector.VectorEnv.np_random_seed">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">VectorEnv.</span></span><span class="sig-name descname"><span class="pre">np_random_seed</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#gymnasium.vector.VectorEnv.np_random_seed" title="Link to this definition">#</a></dt>
-<dd><p>Returns the environment’s internal <code class="xref py py-attr docutils literal notranslate"><span class="pre">_np_random_seed</span></code> that if not set will first initialise with a random int as seed.</p>
-<p>If <a class="reference internal" href="#gymnasium.vector.VectorEnv.np_random_seed" title="gymnasium.vector.VectorEnv.np_random_seed"><code class="xref py py-attr docutils literal notranslate"><span class="pre">np_random_seed</span></code></a> was set directly instead of through <a class="reference internal" href="../#gymnasium.vector.VectorEnv.reset" title="gymnasium.vector.VectorEnv.reset"><code class="xref py py-meth docutils literal notranslate"><span class="pre">reset()</span></code></a> or <code class="xref py py-meth docutils literal notranslate"><span class="pre">set_np_random_through_seed()</span></code>,
-the seed will take the value -1.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>int</strong> – the seed of the current <cite>np_random</cite> or -1, if the seed of the rng is unknown</p>
-</dd>
-</dl>
-</dd></dl>
-
+<span class="n">env</span> <span class="o">=</span> <span class="n">gymnasium</span><span class="o">.</span><span class="n">make</span><span class="p">(</span>
+    <span class="s1">&#39;Ant-v5&#39;</span><span class="p">,</span>
+    <span class="n">xml_file</span><span class="o">=</span><span class="s1">&#39;./mujoco_menagerie/unitree_go1/scene.xml&#39;</span><span class="p">,</span>
+    <span class="n">forward_reward_weight</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">ctrl_cost_weight</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+    <span class="n">contact_cost_weight</span><span class="o">=</span><span class="mf">5e-4</span><span class="p">,</span>
+    <span class="n">healthy_reward</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">main_body</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">healthy_z_range</span><span class="o">=</span><span class="p">(</span><span class="mf">0.195</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">),</span>
+    <span class="n">include_cfrc_ext_in_observation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">exclude_current_positions_from_observation</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">reset_noise_scale</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+    <span class="n">frame_skip</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
+    <span class="n">max_episode_steps</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="o">...</span> <span class="c1"># run your RL algorithm</span>
+</pre></div>
+</div>
+<p><img alt="image" src="https://github.com/Kallinteris-Andreas/Gymnasium-kalli/assets/30759571/bf1797a3-264d-47de-b14c-e3c16072f695" /></p>
+<iframe id="odysee-iframe" style="width:100%; aspect-ratio:16 / 9;" src="https://odysee.com/$/embed/@Kallinteris-Andreas:7/video0-step-0-to-step-1000:1?r=6fn5jA9uZQUZXGKVpwtqjz1eyJcS3hj3" allowfullscreen></iframe>
+<!--
+Which can run up to `4.7 m/s` according to the manufacturer
+-->
+</section>
+<section id="epilogue">
+<h2>Epilogue<a class="headerlink" href="#epilogue" title="Link to this heading">#</a></h2>
+<p>You can follow this guide to create most quadruped environments.
+To create humanoid/bipedal robots, you can also follow this guide using the <code class="docutils literal notranslate"><span class="pre">Gymnasium/MuJoCo/Humnaoid-v5</span></code> framework.</p>
+<p>Author: <a class="reference external" href="https://github.com/Kallinteris-Andreas">&#64;kallinteris-andreas</a></p>
 </section>
 </section>
 
@@ -671,30 +694,8 @@ the seed will take the value -1.</p>
         <footer>
           
           <div class="related-pages">
-            <a class="next-page" href="../utils/">
-              <div class="page-info">
-                <div class="context">
-                  <span>Next</span>
-                </div>
-                <div class="title">Utility functions</div>
-              </div>
-              <svg class="furo-related-icon">
-                <use href="#svg-arrow-right"></use>
-              </svg>
-            </a>
-            <a class="prev-page" href="../async_vector_env/">
-              <svg class="furo-related-icon">
-                <use href="#svg-arrow-right"></use>
-              </svg>
-              <div class="page-info">
-                <div class="context">
-                  <span>Previous</span>
-                </div>
-                
-                <div class="title">AsyncVectorEnv</div>
-                
-              </div>
-            </a>
+            
+            
           </div>
           <div class="bottom-of-page">
             <div class="left-details">
@@ -735,21 +736,17 @@ the seed will take the value -1.</p>
           <div class="toc-tree-container">
             <div class="toc-tree">
               <ul>
-<li><a class="reference internal" href="#">SyncVectorEnv</a><ul>
-<li><a class="reference internal" href="#gymnasium.vector.SyncVectorEnv"><code class="docutils literal notranslate"><span class="pre">SyncVectorEnv</span></code></a><ul>
-<li><a class="reference internal" href="#gymnasium.vector.SyncVectorEnv.reset"><code class="docutils literal notranslate"><span class="pre">SyncVectorEnv.reset()</span></code></a></li>
-<li><a class="reference internal" href="#gymnasium.vector.SyncVectorEnv.step"><code class="docutils literal notranslate"><span class="pre">SyncVectorEnv.step()</span></code></a></li>
-<li><a class="reference internal" href="#gymnasium.vector.SyncVectorEnv.close"><code class="docutils literal notranslate"><span class="pre">SyncVectorEnv.close()</span></code></a></li>
-<li><a class="reference internal" href="#gymnasium.vector.SyncVectorEnv.call"><code class="docutils literal notranslate"><span class="pre">SyncVectorEnv.call()</span></code></a></li>
-<li><a class="reference internal" href="#gymnasium.vector.SyncVectorEnv.get_attr"><code class="docutils literal notranslate"><span class="pre">SyncVectorEnv.get_attr()</span></code></a></li>
-<li><a class="reference internal" href="#gymnasium.vector.SyncVectorEnv.set_attr"><code class="docutils literal notranslate"><span class="pre">SyncVectorEnv.set_attr()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#additional-methods">Additional Methods</a><ul>
-<li><a class="reference internal" href="#gymnasium.vector.VectorEnv.np_random"><code class="docutils literal notranslate"><span class="pre">VectorEnv.np_random</span></code></a></li>
-<li><a class="reference internal" href="#gymnasium.vector.VectorEnv.np_random_seed"><code class="docutils literal notranslate"><span class="pre">VectorEnv.np_random_seed</span></code></a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#">Load custom quadruped robot environments</a><ul>
+<li><a class="reference internal" href="#setup">Setup</a></li>
+<li><a class="reference internal" href="#step-0-1-download-a-robot-model">Step 0.1 - Download a Robot Model</a></li>
+<li><a class="reference internal" href="#step-1-load-the-model">Step 1 - Load the model</a></li>
+<li><a class="reference internal" href="#step-2-tweaking-the-environment-parameters">Step 2 - Tweaking the Environment Parameters</a></li>
+<li><a class="reference internal" href="#step-2-1-tweaking-the-environment-simulation-parameters">Step 2.1 - Tweaking the Environment Simulation Parameters</a></li>
+<li><a class="reference internal" href="#step-2-2-tweaking-the-environment-termination-parameters">Step 2.2 - Tweaking the Environment Termination Parameters</a></li>
+<li><a class="reference internal" href="#step-2-3-tweaking-the-environment-reward-parameters">Step 2.3 - Tweaking the Environment Reward Parameters</a></li>
+<li><a class="reference internal" href="#step-2-4-tweaking-the-environment-observation-parameters">Step 2.4 - Tweaking the Environment Observation Parameters</a></li>
+<li><a class="reference internal" href="#step-3-train-your-agent">Step 3 - Train your Agent</a></li>
+<li><a class="reference internal" href="#epilogue">Epilogue</a></li>
 </ul>
 </li>
 </ul>
@@ -840,6 +837,8 @@ the seed will take the value -1.</p>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=7660844c"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     
     <script>
 

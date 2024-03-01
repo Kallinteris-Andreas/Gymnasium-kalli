@@ -8,7 +8,7 @@
     <meta property="og:type" content="website" />
     <meta property="og:description" content="A standard API for reinforcement learning and a diverse set of reference environments (formerly Gym)" />
     <meta property="og:url" content="https://gymnasium.farama.org/api/wrappers.html" /><meta property="og:image" content="https://gymnasium.farama.org/_static/img/gymnasium-github.png" /><meta name="twitter:card" content="summary_large_image"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../../genindex/" /><link rel="search" title="Search" href="../../search/" /><link rel="next" title="List of Wrappers" href="table/" /><link rel="prev" title="Utility functions" href="../vector/utils/" />
+<link rel="index" title="Index" href="../../genindex/" /><link rel="search" title="Search" href="../../search/" /><link rel="next" title="List of Wrappers" href="table/" /><link rel="prev" title="Spaces Utils" href="../spaces/utils/" />
         <link rel="canonical" href="https://gymnasium.farama.org/api/wrappers.html" />
 
     <link rel="shortcut icon" href="../../_static/favicon.png"/><!-- Generated with Sphinx 7.2.6 and Furo 2023.08.19.dev1 -->
@@ -232,7 +232,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../spaces/fundamental/">Fundamental Spaces</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../spaces/composite/">Composite Spaces</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../spaces/utils/">Spaces Utils</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../vector/utils/">Utility functions</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current has-children current-page"><a class="current reference internal" href="#">Wrappers</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Wrappers</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -648,6 +647,12 @@ Moreover, the behavior of the <a class="reference internal" href="#gymnasium.Wra
 </dd></dl>
 
 <dl class="py property">
+<dt class="sig sig-object py" id="gymnasium.Wrapper.np_random_seed">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Wrapper.</span></span><span class="sig-name descname"><span class="pre">np_random_seed</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#gymnasium.Wrapper.np_random_seed" title="Link to this definition">#</a></dt>
+<dd><p>Returns the base enviroment’s <a class="reference internal" href="#gymnasium.Wrapper.np_random_seed" title="gymnasium.Wrapper.np_random_seed"><code class="xref py py-attr docutils literal notranslate"><span class="pre">np_random_seed</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py property">
 <dt class="sig sig-object py" id="gymnasium.Wrapper.unwrapped">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Wrapper.</span></span><span class="sig-name descname"><span class="pre">unwrapped</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../env/#gymnasium.Env" title="gymnasium.core.Env"><span class="pre">Env</span></a><span class="p"><span class="pre">[</span></span><span class="pre">ObsType</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ActType</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#gymnasium.Wrapper.unwrapped" title="Link to this definition">#</a></dt>
 <dd><p>Returns the base environment of the wrapper.</p>
@@ -673,7 +678,7 @@ Moreover, the behavior of the <a class="reference internal" href="#gymnasium.Wra
                 <use href="#svg-arrow-right"></use>
               </svg>
             </a>
-            <a class="prev-page" href="../vector/utils/">
+            <a class="prev-page" href="../spaces/utils/">
               <svg class="furo-related-icon">
                 <use href="#svg-arrow-right"></use>
               </svg>
@@ -682,7 +687,7 @@ Moreover, the behavior of the <a class="reference internal" href="#gymnasium.Wra
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Utility functions</div>
+                <div class="title">Spaces Utils</div>
                 
               </div>
             </a>
@@ -745,6 +750,7 @@ Moreover, the behavior of the <a class="reference internal" href="#gymnasium.Wra
 <li><a class="reference internal" href="#gymnasium.Wrapper.spec"><code class="docutils literal notranslate"><span class="pre">Wrapper.spec</span></code></a></li>
 <li><a class="reference internal" href="#gymnasium.Wrapper.metadata"><code class="docutils literal notranslate"><span class="pre">Wrapper.metadata</span></code></a></li>
 <li><a class="reference internal" href="#gymnasium.Wrapper.np_random"><code class="docutils literal notranslate"><span class="pre">Wrapper.np_random</span></code></a></li>
+<li><a class="reference internal" href="#gymnasium.Wrapper.np_random_seed"><code class="docutils literal notranslate"><span class="pre">Wrapper.np_random_seed</span></code></a></li>
 <li><a class="reference internal" href="#gymnasium.Wrapper.unwrapped"><code class="docutils literal notranslate"><span class="pre">Wrapper.unwrapped</span></code></a></li>
 </ul>
 </li>
@@ -834,7 +840,7 @@ Moreover, the behavior of the <a class="reference internal" href="#gymnasium.Wra
         })()
       </script>
 
-    <script src="../../_static/documentation_options.js?v=a4d19d35"></script>
+    <script src="../../_static/documentation_options.js?v=ed34540e"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=7660844c"></script>
