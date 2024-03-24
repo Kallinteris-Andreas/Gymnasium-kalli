@@ -400,6 +400,7 @@
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../../../tutorials/gymnasium_basics/">Gymnasium Basics</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of Gymnasium Basics</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../tutorials/gymnasium_basics/load_quadruped_model/">Load custom quadruped robot environments</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../tutorials/gymnasium_basics/handling_time_limits/">Handling Time Limits</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../tutorials/gymnasium_basics/implementing_custom_wrappers/">Implementing Custom Wrappers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../tutorials/gymnasium_basics/environment_creation/">Make your own custom environment</a></li>
@@ -478,7 +479,6 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
 <span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">singledispatch</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Iterator</span>
@@ -494,6 +494,7 @@
     <span class="n">GraphInstance</span><span class="p">,</span>
     <span class="n">MultiBinary</span><span class="p">,</span>
     <span class="n">MultiDiscrete</span><span class="p">,</span>
+    <span class="n">OneOf</span><span class="p">,</span>
     <span class="n">Sequence</span><span class="p">,</span>
     <span class="n">Space</span><span class="p">,</span>
     <span class="n">Text</span><span class="p">,</span>
@@ -598,8 +599,9 @@
 <span class="nd">@batch_space</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Graph</span><span class="p">)</span>
 <span class="nd">@batch_space</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Text</span><span class="p">)</span>
 <span class="nd">@batch_space</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Sequence</span><span class="p">)</span>
+<span class="nd">@batch_space</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">OneOf</span><span class="p">)</span>
 <span class="nd">@batch_space</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Space</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">_batch_space_custom</span><span class="p">(</span><span class="n">space</span><span class="p">:</span> <span class="n">Graph</span> <span class="o">|</span> <span class="n">Text</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_batch_space_custom</span><span class="p">(</span><span class="n">space</span><span class="p">:</span> <span class="n">Graph</span> <span class="o">|</span> <span class="n">Text</span> <span class="o">|</span> <span class="n">Sequence</span> <span class="o">|</span> <span class="n">OneOf</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
     <span class="c1"># Without deepcopy, then the space.np_random is batched_space.spaces[0].np_random</span>
     <span class="c1"># Which is an issue if you are sampling actions of both the original space and the batched space</span>
     <span class="n">batched_space</span> <span class="o">=</span> <span class="n">Tuple</span><span class="p">(</span>
@@ -637,9 +639,9 @@
 <span class="sd">        &gt;&gt;&gt; items = space.sample()</span>
 <span class="sd">        &gt;&gt;&gt; it = iterate(space, items)</span>
 <span class="sd">        &gt;&gt;&gt; next(it)</span>
-<span class="sd">        OrderedDict([(&#39;position&#39;, array([0.77395606, 0.43887845, 0.85859793], dtype=float32)), (&#39;velocity&#39;, array([0.77395606, 0.43887845], dtype=float32))])</span>
+<span class="sd">        {&#39;position&#39;: array([0.77395606, 0.43887845, 0.85859793], dtype=float32), &#39;velocity&#39;: array([0.77395606, 0.43887845], dtype=float32)}</span>
 <span class="sd">        &gt;&gt;&gt; next(it)</span>
-<span class="sd">        OrderedDict([(&#39;position&#39;, array([0.697368  , 0.09417735, 0.97562236], dtype=float32)), (&#39;velocity&#39;, array([0.85859793, 0.697368  ], dtype=float32))])</span>
+<span class="sd">        {&#39;position&#39;: array([0.697368  , 0.09417735, 0.97562236], dtype=float32), &#39;velocity&#39;: array([0.85859793, 0.697368  ], dtype=float32)}</span>
 <span class="sd">        &gt;&gt;&gt; next(it)</span>
 <span class="sd">        Traceback (most recent call last):</span>
 <span class="sd">            ...</span>
@@ -701,7 +703,7 @@
         <span class="p">]</span>
     <span class="p">)</span>
     <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">values</span><span class="p">):</span>
-        <span class="k">yield</span> <span class="n">OrderedDict</span><span class="p">({</span><span class="n">key</span><span class="p">:</span> <span class="n">value</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">item</span><span class="p">)})</span>
+        <span class="k">yield</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">value</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">item</span><span class="p">)}</span>
 
 
 <div class="viewcode-block" id="concatenate">
@@ -765,18 +767,17 @@
 <span class="k">def</span> <span class="nf">_concatenate_dict</span><span class="p">(</span>
     <span class="n">space</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">items</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">out</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-    <span class="k">return</span> <span class="n">OrderedDict</span><span class="p">(</span>
-        <span class="p">{</span>
-            <span class="n">key</span><span class="p">:</span> <span class="n">concatenate</span><span class="p">(</span><span class="n">subspace</span><span class="p">,</span> <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">],</span> <span class="n">out</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
-            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">subspace</span> <span class="ow">in</span> <span class="n">space</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-        <span class="p">}</span>
-    <span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="n">key</span><span class="p">:</span> <span class="n">concatenate</span><span class="p">(</span><span class="n">subspace</span><span class="p">,</span> <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">],</span> <span class="n">out</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">subspace</span> <span class="ow">in</span> <span class="n">space</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+    <span class="p">}</span>
 
 
 <span class="nd">@concatenate</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Graph</span><span class="p">)</span>
 <span class="nd">@concatenate</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Text</span><span class="p">)</span>
 <span class="nd">@concatenate</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Sequence</span><span class="p">)</span>
 <span class="nd">@concatenate</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Space</span><span class="p">)</span>
+<span class="nd">@concatenate</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">OneOf</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_concatenate_custom</span><span class="p">(</span><span class="n">space</span><span class="p">:</span> <span class="n">Space</span><span class="p">,</span> <span class="n">items</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">out</span><span class="p">:</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
     <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
 
@@ -809,9 +810,9 @@
 <span class="sd">        ... &#39;position&#39;: Box(low=0, high=1, shape=(3,), dtype=np.float32),</span>
 <span class="sd">        ... &#39;velocity&#39;: Box(low=0, high=1, shape=(2,), dtype=np.float32)})</span>
 <span class="sd">        &gt;&gt;&gt; create_empty_array(space, n=2, fn=np.zeros)</span>
-<span class="sd">        OrderedDict([(&#39;position&#39;, array([[0., 0., 0.],</span>
-<span class="sd">               [0., 0., 0.]], dtype=float32)), (&#39;velocity&#39;, array([[0., 0.],</span>
-<span class="sd">               [0., 0.]], dtype=float32))])</span>
+<span class="sd">        {&#39;position&#39;: array([[0., 0., 0.],</span>
+<span class="sd">               [0., 0., 0.]], dtype=float32), &#39;velocity&#39;: array([[0., 0.],</span>
+<span class="sd">               [0., 0.]], dtype=float32)}</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
         <span class="sa">f</span><span class="s2">&quot;The space provided to `create_empty_array` is not a gymnasium Space instance, type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">space</span><span class="p">)</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">space</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -819,7 +820,7 @@
 
 
 
-<span class="c1"># It is possible for the some of the Box low to be greater than 0, then array is not in space</span>
+<span class="c1"># It is possible for some of the Box low to be greater than 0, then array is not in space</span>
 <span class="nd">@create_empty_array</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Box</span><span class="p">)</span>
 <span class="c1"># If the Discrete start &gt; 0 or start + length &lt; 0 then array is not in space</span>
 <span class="nd">@create_empty_array</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Discrete</span><span class="p">)</span>
@@ -836,12 +837,9 @@
 
 <span class="nd">@create_empty_array</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Dict</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_create_empty_array_dict</span><span class="p">(</span><span class="n">space</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">fn</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-    <span class="k">return</span> <span class="n">OrderedDict</span><span class="p">(</span>
-        <span class="p">{</span>
-            <span class="n">key</span><span class="p">:</span> <span class="n">create_empty_array</span><span class="p">(</span><span class="n">subspace</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">fn</span><span class="o">=</span><span class="n">fn</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">subspace</span> <span class="ow">in</span> <span class="n">space</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-        <span class="p">}</span>
-    <span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="n">key</span><span class="p">:</span> <span class="n">create_empty_array</span><span class="p">(</span><span class="n">subspace</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">fn</span><span class="o">=</span><span class="n">fn</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">subspace</span> <span class="ow">in</span> <span class="n">space</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+    <span class="p">}</span>
 
 
 <span class="nd">@create_empty_array</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Graph</span><span class="p">)</span>
@@ -883,6 +881,11 @@
         <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">tuple</span><span class="p">()</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+
+
+<span class="nd">@create_empty_array</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">OneOf</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_create_empty_array_oneof</span><span class="p">(</span><span class="n">space</span><span class="p">:</span> <span class="n">OneOf</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">fn</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">tuple</span><span class="p">()</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
 
 
 <span class="nd">@create_empty_array</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Space</span><span class="p">)</span>

@@ -400,6 +400,7 @@
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../../tutorials/gymnasium_basics/">Gymnasium Basics</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of Gymnasium Basics</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../tutorials/gymnasium_basics/load_quadruped_model/">Load custom quadruped robot environments</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../tutorials/gymnasium_basics/handling_time_limits/">Handling Time Limits</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../tutorials/gymnasium_basics/implementing_custom_wrappers/">Implementing Custom Wrappers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../tutorials/gymnasium_basics/environment_creation/">Make your own custom environment</a></li>
@@ -1251,6 +1252,21 @@
                 <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2"> was raised from the environment creator for </span><span class="si">{</span><span class="n">env_spec</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2"> with kwargs (</span><span class="si">{</span><span class="n">env_spec_kwargs</span><span class="si">}</span><span class="s2">)&quot;</span>
             <span class="p">)</span>
 
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">gym</span><span class="o">.</span><span class="n">Env</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="nb">str</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">__base__</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;&lt;class &#39;gym.core.Env&#39;&gt;&quot;</span>
+            <span class="ow">or</span> <span class="nb">str</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">__base__</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;&lt;class &#39;gym.core.Wrapper&#39;&gt;&quot;</span>
+        <span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="s2">&quot;Gym is incompatible with Gymnasium, please update the environment class to `gymnasium.Env`. &quot;</span>
+                <span class="s2">&quot;See https://gymnasium.farama.org/introduction/create_custom_env/ for more info.&quot;</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;The environment must inherit from the gymnasium.Env class, actual class: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">env</span><span class="p">)</span><span class="si">}</span><span class="s2">. &quot;</span>
+                <span class="s2">&quot;See https://gymnasium.farama.org/introduction/create_custom_env/ for more info.&quot;</span>
+            <span class="p">)</span>
+
     <span class="c1"># Set the minimal env spec for the environment.</span>
     <span class="n">env</span><span class="o">.</span><span class="n">unwrapped</span><span class="o">.</span><span class="n">spec</span> <span class="o">=</span> <span class="n">EnvSpec</span><span class="p">(</span>
         <span class="nb">id</span><span class="o">=</span><span class="n">env_spec</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
@@ -1415,6 +1431,15 @@
         <span class="p">)</span>
 
     <span class="k">elif</span> <span class="n">vectorization_mode</span> <span class="o">==</span> <span class="n">VectorizeMode</span><span class="o">.</span><span class="n">VECTOR_ENTRY_POINT</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">vector_kwargs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">error</span><span class="o">.</span><span class="n">Error</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Custom vector environment can be passed arguments only through kwargs and `vector_kwargs` is not empty (</span><span class="si">{</span><span class="n">vector_kwargs</span><span class="si">}</span><span class="s2">)&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">wrappers</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">error</span><span class="o">.</span><span class="n">Error</span><span class="p">(</span>
+                <span class="s2">&quot;Cannot use `vector_entry_point` vectorization mode with the wrappers argument.&quot;</span>
+            <span class="p">)</span>
+
         <span class="n">entry_point</span> <span class="o">=</span> <span class="n">env_spec</span><span class="o">.</span><span class="n">vector_entry_point</span>
         <span class="k">if</span> <span class="n">entry_point</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">error</span><span class="o">.</span><span class="n">Error</span><span class="p">(</span>
@@ -1425,15 +1450,13 @@
         <span class="k">else</span><span class="p">:</span>  <span class="c1"># Assume it&#39;s a string</span>
             <span class="n">env_creator</span> <span class="o">=</span> <span class="n">load_env_creator</span><span class="p">(</span><span class="n">entry_point</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">wrappers</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">error</span><span class="o">.</span><span class="n">Error</span><span class="p">(</span>
-                <span class="s2">&quot;Cannot use `vector_entry_point` vectorization mode with the wrappers argument.&quot;</span>
-            <span class="p">)</span>
-        <span class="k">if</span> <span class="s2">&quot;max_episode_steps&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">vector_kwargs</span><span class="p">:</span>
-            <span class="k">assert</span> <span class="n">vector_kwargs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="n">vector_kwargs</span><span class="p">[</span><span class="s2">&quot;max_episode_steps&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">env_spec</span><span class="o">.</span><span class="n">max_episode_steps</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">env_spec</span><span class="o">.</span><span class="n">max_episode_steps</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="ow">and</span> <span class="s2">&quot;max_episode_steps&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">env_spec_kwargs</span>
+        <span class="p">):</span>
+            <span class="n">env_spec_kwargs</span><span class="p">[</span><span class="s2">&quot;max_episode_steps&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">env_spec</span><span class="o">.</span><span class="n">max_episode_steps</span>
 
-        <span class="n">env</span> <span class="o">=</span> <span class="n">env_creator</span><span class="p">(</span><span class="n">num_envs</span><span class="o">=</span><span class="n">num_envs</span><span class="p">,</span> <span class="o">**</span><span class="n">vector_kwargs</span><span class="p">)</span>
+        <span class="n">env</span> <span class="o">=</span> <span class="n">env_creator</span><span class="p">(</span><span class="n">num_envs</span><span class="o">=</span><span class="n">num_envs</span><span class="p">,</span> <span class="o">**</span><span class="n">env_spec_kwargs</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="n">error</span><span class="o">.</span><span class="n">Error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown vectorization mode: </span><span class="si">{</span><span class="n">vectorization_mode</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
