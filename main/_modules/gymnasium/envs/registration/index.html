@@ -10,7 +10,7 @@
     <meta property="og:url" content="https://gymnasium.farama.org/_modules/gymnasium/envs/registration.html" /><meta property="og:image" content="https://gymnasium.farama.org/_static/img/gymnasium-github.png" /><meta name="twitter:card" content="summary_large_image"><link rel="index" title="Index" href="../../../../genindex/" /><link rel="search" title="Search" href="../../../../search/" />
         <link rel="canonical" href="https://gymnasium.farama.org/_modules/gymnasium/envs/registration.html" />
 
-    <link rel="shortcut icon" href="../../../../_static/favicon.png"/><!-- Generated with Sphinx 7.2.6 and Furo 2023.08.19.dev1 -->
+    <link rel="shortcut icon" href="../../../../_static/favicon.png"/><!-- Generated with Sphinx 7.3.7 and Furo 2023.08.19.dev1 -->
         <title>gymnasium.envs.registration - Gymnasium Documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=3e7f4c72" />
@@ -395,7 +395,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../environments/atari/zaxxon/">Zaxxon</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../environments/third_party_environments/">Third-Party Environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../environments/third_party_environments/">External Environments</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
@@ -638,7 +638,7 @@
 
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">env_spec</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
-                <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                     <span class="sa">f</span><span class="s2">&quot;Callable found in </span><span class="si">{</span><span class="n">spec_name</span><span class="si">}</span><span class="s2"> for </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> attribute with value=</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">. Currently, Gymnasium does not support serialising callables.&quot;</span>
                 <span class="p">)</span>
 
@@ -1346,7 +1346,7 @@
 <span class="sd">    We refer to the Vector environment as the vectorizor while the environment being vectorized is the base or vectorized environment (``vectorizor(vectorized env)``).</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        id: Name of the environment. Optionally, a module to import can be included, eg. &#39;module:Env-v0&#39;</span>
+<span class="sd">        id: Name of the environment. Optionally, a module to import can be included, e.g. &#39;module:Env-v0&#39;</span>
 <span class="sd">        num_envs: Number of environments to create</span>
 <span class="sd">        vectorization_mode: The vectorization method used, defaults to ``None`` such that if env id&#39; spec has a ``vector_entry_point`` (not ``None``),</span>
 <span class="sd">            this is first used otherwise defaults to ``sync`` to use the :class:`gymnasium.vector.SyncVectorEnv`.</span>
@@ -1375,6 +1375,8 @@
 
     <span class="n">env_spec</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">env_spec</span><span class="p">)</span>
     <span class="n">env_spec_kwargs</span> <span class="o">=</span> <span class="n">env_spec</span><span class="o">.</span><span class="n">kwargs</span>
+    <span class="c1"># for sync or async, these parameters should be passed in `make(..., **kwargs)` rather than in the env spec kwargs, therefore, we `reset` the kwargs</span>
+    <span class="n">env_spec</span><span class="o">.</span><span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
     <span class="n">num_envs</span> <span class="o">=</span> <span class="n">env_spec_kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;num_envs&quot;</span><span class="p">,</span> <span class="n">num_envs</span><span class="p">)</span>
     <span class="n">vectorization_mode</span> <span class="o">=</span> <span class="n">env_spec_kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;vectorization_mode&quot;</span><span class="p">,</span> <span class="n">vectorization_mode</span><span class="p">)</span>
@@ -1435,9 +1437,13 @@
             <span class="k">raise</span> <span class="n">error</span><span class="o">.</span><span class="n">Error</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;Custom vector environment can be passed arguments only through kwargs and `vector_kwargs` is not empty (</span><span class="si">{</span><span class="n">vector_kwargs</span><span class="si">}</span><span class="s2">)&quot;</span>
             <span class="p">)</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">wrappers</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">wrappers</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">error</span><span class="o">.</span><span class="n">Error</span><span class="p">(</span>
-                <span class="s2">&quot;Cannot use `vector_entry_point` vectorization mode with the wrappers argument.&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Cannot use `vector_entry_point` vectorization mode with the wrappers argument (</span><span class="si">{</span><span class="n">wrappers</span><span class="si">}</span><span class="s2">).&quot;</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">env_spec</span><span class="o">.</span><span class="n">additional_wrappers</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">error</span><span class="o">.</span><span class="n">Error</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Cannot use `vector_entry_point` vectorization mode with the additional_wrappers parameter in spec being not empty (</span><span class="si">{</span><span class="n">env_spec</span><span class="o">.</span><span class="n">additional_wrappers</span><span class="si">}</span><span class="s2">).&quot;</span>
             <span class="p">)</span>
 
         <span class="n">entry_point</span> <span class="o">=</span> <span class="n">env_spec</span><span class="o">.</span><span class="n">vector_entry_point</span>
@@ -1698,8 +1704,8 @@
         })()
       </script>
 
-    <script src="../../../../_static/documentation_options.js?v=ed34540e"></script>
-    <script src="../../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../../_static/documentation_options.js?v=31d51385"></script>
+    <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/scripts/furo.js?v=7660844c"></script>
     

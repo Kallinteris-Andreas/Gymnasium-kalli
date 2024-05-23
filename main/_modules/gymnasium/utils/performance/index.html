@@ -7,11 +7,11 @@
     <meta property="og:title" content="Gymnasium Documentation" />
     <meta property="og:type" content="website" />
     <meta property="og:description" content="A standard API for reinforcement learning and a diverse set of reference environments (formerly Gym)" />
-    <meta property="og:url" content="https://gymnasium.farama.org/_modules/gymnasium/utils/seeding.html" /><meta property="og:image" content="https://gymnasium.farama.org/_static/img/gymnasium-github.png" /><meta name="twitter:card" content="summary_large_image"><link rel="index" title="Index" href="../../../../genindex/" /><link rel="search" title="Search" href="../../../../search/" />
-        <link rel="canonical" href="https://gymnasium.farama.org/_modules/gymnasium/utils/seeding.html" />
+    <meta property="og:url" content="https://gymnasium.farama.org/_modules/gymnasium/utils/performance.html" /><meta property="og:image" content="https://gymnasium.farama.org/_static/img/gymnasium-github.png" /><meta name="twitter:card" content="summary_large_image"><link rel="index" title="Index" href="../../../../genindex/" /><link rel="search" title="Search" href="../../../../search/" />
+        <link rel="canonical" href="https://gymnasium.farama.org/_modules/gymnasium/utils/performance.html" />
 
     <link rel="shortcut icon" href="../../../../_static/favicon.png"/><!-- Generated with Sphinx 7.3.7 and Furo 2023.08.19.dev1 -->
-        <title>gymnasium.utils.seeding - Gymnasium Documentation</title>
+        <title>gymnasium.utils.performance - Gymnasium Documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=3e7f4c72" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=61a4c737" />
@@ -469,54 +469,117 @@
           </div>
           <article role="main">
             
-            <h1>Source code for gymnasium.utils.seeding</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Set of random number generator functions: seeding, generator, hashing seeds.&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+            <h1>Source code for gymnasium.utils.performance</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;A collection of runtime performance bencharks, useful for debugging performance related issues.&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span>
 
-<span class="kn">from</span> <span class="nn">gymnasium</span> <span class="kn">import</span> <span class="n">error</span>
+<span class="kn">import</span> <span class="nn">gymnasium</span>
 
 
-<div class="viewcode-block" id="np_random">
-<a class="viewcode-back" href="../../../../api/utils/#gymnasium.utils.seeding.np_random">[docs]</a>
-<span class="k">def</span> <span class="nf">np_random</span><span class="p">(</span><span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">Generator</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns a NumPy random number generator (RNG) along with seed value from the inputted seed.</span>
+<div class="viewcode-block" id="benchmark_step">
+<a class="viewcode-back" href="../../../../api/utils/#gymnasium.utils.performance.benchmark_step">[docs]</a>
+<span class="k">def</span> <span class="nf">benchmark_step</span><span class="p">(</span><span class="n">env</span><span class="p">:</span> <span class="n">gymnasium</span><span class="o">.</span><span class="n">Env</span><span class="p">,</span> <span class="n">target_duration</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A benchmark to measure the runtime performance of step for an environment.</span>
 
-<span class="sd">    If ``seed`` is ``None`` then a **random** seed will be generated as the RNG&#39;s initial seed.</span>
-<span class="sd">    This randomly selected seed is returned as the second value of the tuple.</span>
-
-<span class="sd">    .. py:currentmodule:: gymnasium.Env</span>
-
-<span class="sd">    This function is called in :meth:`reset` to reset an environment&#39;s initial RNG.</span>
+<span class="sd">    example usage:</span>
+<span class="sd">        ```py</span>
+<span class="sd">        env_old = ...</span>
+<span class="sd">        old_throughput = benchmark_step(env_old)</span>
+<span class="sd">        env_new = ...</span>
+<span class="sd">        new_throughput = benchmark_step(env_old)</span>
+<span class="sd">        slowdown = old_throughput / new_throughput</span>
+<span class="sd">        ```</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        seed: The seed used to create the generator</span>
+<span class="sd">        env: the environment to benchmarked.</span>
+<span class="sd">        target_duration: the duration of the benchmark in seconds (note: it will go slightly over it).</span>
+<span class="sd">        seed: seeds the environment and action sampled.</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">        A NumPy-based Random Number Generator and generator seed</span>
-
-<span class="sd">    Raises:</span>
-<span class="sd">        Error: Seed must be a non-negative integer</span>
+<span class="sd">    Returns: the average steps per second.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">seed</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">seed</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">and</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">seed</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">seed</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">error</span><span class="o">.</span><span class="n">Error</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Seed must be a python integer, actual type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">error</span><span class="o">.</span><span class="n">Error</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Seed must be greater or equal to zero, actual value: </span><span class="si">{</span><span class="n">seed</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="p">)</span>
+    <span class="n">steps</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">end</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
-    <span class="n">seed_seq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">SeedSequence</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
-    <span class="n">np_seed</span> <span class="o">=</span> <span class="n">seed_seq</span><span class="o">.</span><span class="n">entropy</span>
-    <span class="n">rng</span> <span class="o">=</span> <span class="n">RandomNumberGenerator</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">PCG64</span><span class="p">(</span><span class="n">seed_seq</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">rng</span><span class="p">,</span> <span class="n">np_seed</span></div>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">steps</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">action</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">terminal</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">terminal</span> <span class="ow">or</span> <span class="n">truncated</span><span class="p">:</span>
+            <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span> <span class="o">&gt;</span> <span class="n">target_duration</span><span class="p">:</span>
+            <span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="k">break</span>
+
+    <span class="n">length</span> <span class="o">=</span> <span class="n">end</span> <span class="o">-</span> <span class="n">start</span>
+
+    <span class="n">steps_per_time</span> <span class="o">=</span> <span class="n">steps</span> <span class="o">/</span> <span class="n">length</span>
+    <span class="k">return</span> <span class="n">steps_per_time</span></div>
 
 
 
-<span class="n">RNG</span> <span class="o">=</span> <span class="n">RandomNumberGenerator</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">Generator</span>
+<div class="viewcode-block" id="benchmark_init">
+<a class="viewcode-back" href="../../../../api/utils/#gymnasium.utils.performance.benchmark_init">[docs]</a>
+<span class="k">def</span> <span class="nf">benchmark_init</span><span class="p">(</span>
+    <span class="n">env_lambda</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="n">gymnasium</span><span class="o">.</span><span class="n">Env</span><span class="p">],</span> <span class="n">target_duration</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A benchmark to measure the initialization time and first reset.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        env_lambda: the function to initialize the environment.</span>
+<span class="sd">        target_duration: the duration of the benchmark in seconds (note: it will go slightly over it).</span>
+<span class="sd">        seed: seeds the first reset of the environment.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">inits</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">end</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">inits</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">env</span> <span class="o">=</span> <span class="n">env_lambda</span><span class="p">()</span>
+        <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span> <span class="o">&gt;</span> <span class="n">target_duration</span><span class="p">:</span>
+            <span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="k">break</span>
+    <span class="n">length</span> <span class="o">=</span> <span class="n">end</span> <span class="o">-</span> <span class="n">start</span>
+
+    <span class="n">inits_per_time</span> <span class="o">=</span> <span class="n">inits</span> <span class="o">/</span> <span class="n">length</span>
+    <span class="k">return</span> <span class="n">inits_per_time</span></div>
+
+
+
+<div class="viewcode-block" id="benchmark_render">
+<a class="viewcode-back" href="../../../../api/utils/#gymnasium.utils.performance.benchmark_render">[docs]</a>
+<span class="k">def</span> <span class="nf">benchmark_render</span><span class="p">(</span><span class="n">env</span><span class="p">:</span> <span class="n">gymnasium</span><span class="o">.</span><span class="n">Env</span><span class="p">,</span> <span class="n">target_duration</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A benchmark to measure the time of render().</span>
+
+<span class="sd">    Note: does not work with `render_mode=&#39;human&#39;`</span>
+<span class="sd">    Args:</span>
+<span class="sd">        env: the environment to benchmarked (Note: must be renderable).</span>
+<span class="sd">        target_duration: the duration of the benchmark in seconds (note: it will go slightly over it).</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">renders</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">end</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">renders</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">env</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span> <span class="o">&gt;</span> <span class="n">target_duration</span><span class="p">:</span>
+            <span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="k">break</span>
+    <span class="n">length</span> <span class="o">=</span> <span class="n">end</span> <span class="o">-</span> <span class="n">start</span>
+
+    <span class="n">renders_per_time</span> <span class="o">=</span> <span class="n">renders</span> <span class="o">/</span> <span class="n">length</span>
+    <span class="k">return</span> <span class="n">renders_per_time</span></div>
+
 </pre></div>
           </article>
         </div>
