@@ -738,71 +738,6 @@ However, philosophers are still not sure whether it is still the same dog.</p>
 </section>
 <section id="save-rendering-videos">
 <h2>Save Rendering Videos<a class="headerlink" href="#save-rendering-videos" title="Link to this heading">¶</a></h2>
-<dl class="py function">
-<dt class="sig sig-object py" id="gymnasium.utils.save_video.save_video">
-<span class="sig-prename descclassname"><span class="pre">gymnasium.utils.save_video.</span></span><span class="sig-name descname"><span class="pre">save_video</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frames</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">video_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">episode_trigger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step_trigger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">video_length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name_prefix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'rl-video'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">episode_index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step_starting_index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gymnasium/utils/save_video/#save_video"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gymnasium.utils.save_video.save_video" title="Link to this definition">¶</a></dt>
-<dd><p>Save videos from rendering frames.</p>
-<p>This function extract video from a list of render frame episodes.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>frames</strong> (<em>List</em><em>[</em><em>RenderFrame</em><em>]</em>) – A list of frames to compose the video.</p></li>
-<li><p><strong>video_folder</strong> (<em>str</em>) – The folder where the recordings will be stored</p></li>
-<li><p><strong>episode_trigger</strong> – Function that accepts an integer and returns <code class="docutils literal notranslate"><span class="pre">True</span></code> iff a recording should be started at this episode</p></li>
-<li><p><strong>step_trigger</strong> – Function that accepts an integer and returns <code class="docutils literal notranslate"><span class="pre">True</span></code> iff a recording should be started at this step</p></li>
-<li><p><strong>video_length</strong> (<em>int</em>) – The length of recorded episodes. If it isn’t specified, the entire episode is recorded.
-Otherwise, snippets of the specified length are captured.</p></li>
-<li><p><strong>name_prefix</strong> (<em>str</em>) – Will be prepended to the filename of the recordings.</p></li>
-<li><p><strong>episode_index</strong> (<em>int</em>) – The index of the current episode.</p></li>
-<li><p><strong>step_starting_index</strong> (<em>int</em>) – The step index of the first frame.</p></li>
-<li><p><strong>save_logger</strong> – If to log the video saving progress, helpful for long videos that take a while, use “bar” to enable.</p></li>
-<li><p><strong>**kwargs</strong> – The kwargs that will be passed to moviepy’s ImageSequenceClip.
-You need to specify either fps or duration.</p></li>
-</ul>
-</dd>
-</dl>
-<p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gymnasium.utils.save_video</span> <span class="kn">import</span> <span class="n">save_video</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;FrozenLake-v1&quot;</span><span class="p">,</span> <span class="n">render_mode</span><span class="o">=</span><span class="s2">&quot;rgb_array_list&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">_</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">step_starting_index</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">episode_index</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">step_index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">199</span><span class="p">):</span> 
-<span class="gp">... </span>   <span class="n">action</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
-<span class="gp">... </span>   <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
-<span class="gp">...</span>
-<span class="gp">... </span>   <span class="k">if</span> <span class="n">terminated</span> <span class="ow">or</span> <span class="n">truncated</span><span class="p">:</span>
-<span class="gp">... </span>      <span class="n">save_video</span><span class="p">(</span>
-<span class="gp">... </span>         <span class="n">frames</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">render</span><span class="p">(),</span>
-<span class="gp">... </span>         <span class="n">video_folder</span><span class="o">=</span><span class="s2">&quot;videos&quot;</span><span class="p">,</span>
-<span class="gp">... </span>         <span class="n">fps</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;render_fps&quot;</span><span class="p">],</span>
-<span class="gp">... </span>         <span class="n">step_starting_index</span><span class="o">=</span><span class="n">step_starting_index</span><span class="p">,</span>
-<span class="gp">... </span>         <span class="n">episode_index</span><span class="o">=</span><span class="n">episode_index</span>
-<span class="gp">... </span>      <span class="p">)</span>
-<span class="gp">... </span>      <span class="n">step_starting_index</span> <span class="o">=</span> <span class="n">step_index</span> <span class="o">+</span> <span class="mi">1</span>
-<span class="gp">... </span>      <span class="n">episode_index</span> <span class="o">+=</span> <span class="mi">1</span>
-<span class="gp">... </span>      <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="gymnasium.utils.save_video.capped_cubic_video_schedule">
-<span class="sig-prename descclassname"><span class="pre">gymnasium.utils.save_video.</span></span><span class="sig-name descname"><span class="pre">capped_cubic_video_schedule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">episode_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../_modules/gymnasium/utils/save_video/#capped_cubic_video_schedule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gymnasium.utils.save_video.capped_cubic_video_schedule" title="Link to this definition">¶</a></dt>
-<dd><p>The default episode trigger.</p>
-<p>This function will trigger recordings at the episode indices <span class="math notranslate nohighlight">\(\{0, 1, 4, 8, 27, ..., k^3, ..., 729, 1000, 2000, 3000, ...\}\)</span></p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>episode_id</strong> – The episode number</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>If to apply a video schedule number</strong></p>
-</dd>
-</dl>
-</dd></dl>
-
 </section>
 <section id="old-to-new-step-api-compatibility">
 <h2>Old to New Step API Compatibility<a class="headerlink" href="#old-to-new-step-api-compatibility" title="Link to this heading">¶</a></h2>
@@ -1023,11 +958,7 @@ These tests require manual inspection of its outputs:</p>
 <li><a class="reference internal" href="#gymnasium.utils.ezpickle.EzPickle"><code class="docutils literal notranslate"><span class="pre">EzPickle</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#save-rendering-videos">Save Rendering Videos</a><ul>
-<li><a class="reference internal" href="#gymnasium.utils.save_video.save_video"><code class="docutils literal notranslate"><span class="pre">save_video()</span></code></a></li>
-<li><a class="reference internal" href="#gymnasium.utils.save_video.capped_cubic_video_schedule"><code class="docutils literal notranslate"><span class="pre">capped_cubic_video_schedule()</span></code></a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#save-rendering-videos">Save Rendering Videos</a></li>
 <li><a class="reference internal" href="#old-to-new-step-api-compatibility">Old to New Step API Compatibility</a><ul>
 <li><a class="reference internal" href="#gymnasium.utils.step_api_compatibility.step_api_compatibility"><code class="docutils literal notranslate"><span class="pre">step_api_compatibility()</span></code></a></li>
 <li><a class="reference internal" href="#gymnasium.utils.step_api_compatibility.convert_to_terminated_truncated_step_api"><code class="docutils literal notranslate"><span class="pre">convert_to_terminated_truncated_step_api()</span></code></a></li>
@@ -1130,8 +1061,6 @@ These tests require manual inspection of its outputs:</p>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=7660844c"></script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     
     <script>
 
