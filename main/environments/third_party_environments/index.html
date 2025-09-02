@@ -221,8 +221,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../introduction/create_custom_env/">Create a Custom Environment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../introduction/record_agent/">Recording Agents</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../introduction/speed_up_env/">Speeding Up Training</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../introduction/gym_compatibility/">Compatibility with Gym</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../introduction/migration_guide/">Migration Guide - v0.21 to v1.0.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction/migration_guide/">Gym Migration Guide</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -296,24 +295,20 @@
 <ul>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../tutorials/gymnasium_basics/">Gymnasium Basics</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of Gymnasium Basics</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../tutorials/gymnasium_basics/environment_creation/">Make your own custom environment</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../tutorials/gymnasium_basics/implementing_custom_wrappers/">Implementing Custom Wrappers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../tutorials/gymnasium_basics/handling_time_limits/">Handling Time Limits</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../tutorials/gymnasium_basics/load_quadruped_model/">Load custom quadruped robot environments</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tutorials/gymnasium_basics/handling_time_limits/">Handling Time Limits</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tutorials/gymnasium_basics/implementing_custom_wrappers/">Implementing Custom Wrappers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../tutorials/gymnasium_basics/environment_creation/">Make your own custom environment</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tutorials/gymnasium_basics/load_quadruped_model/">Load custom quadruped robot environments</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../tutorials/training_agents/">Training Agents</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of Training Agents</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../tutorials/training_agents/blackjack_q_learning/">Solving Blackjack with Q-Learning</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../tutorials/training_agents/frozenlake_q_learning/">Frozenlake benchmark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/training_agents/action_masking_taxi/">Action Masking in the Taxi Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/training_agents/action_masking_taxi/#running-the-experiment">Running the Experiment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/training_agents/action_masking_taxi/#visualizing-results">Visualizing Results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/training_agents/action_masking_taxi/#results-analysis">Results Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/training_agents/blackjack_q_learning/">Solving Blackjack with Tabular Q-Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/training_agents/frozenlake_q_learning/">Solving Frozenlake with Tabular Q-Learning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tutorials/training_agents/mujoco_reinforce/">Training using REINFORCE for Mujoco</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../tutorials/training_agents/vector_a2c/">Training A2C with Vector Envs and Domain Randomization</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../tutorials/training_agents/mujoco_reinforce/">Training using REINFORCE for Mujoco</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../tutorials/training_agents/blackjack_q_learning/">Solving Blackjack with Q-Learning</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../tutorials/training_agents/frozenlake_q_learning/">Frozenlake benchmark</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../tutorials/training_agents/vector_a2c/">Training A2C with Vector Envs and Domain Randomization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorials/training_agents/vector_a2c/">Speeding up A2C Training with Vector Envs</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/third-party-tutorials/">Third-Party Tutorials</a></li>
@@ -484,6 +479,11 @@ goal-RL (<a class="reference external" href="https://robotics.farama.org/">Gymna
 <h3>Game environments<a class="headerlink" href="#game-environments" title="Link to this heading">¶</a></h3>
 <p><em>Board Games, Video Games and all other interactive entrainment mediums.</em></p>
 <ul>
+<li><p><a class="reference external" href="https://github.com/markov-labs/RL-Minesweeper">Advanced Minesweeper Environment</a></p>
+<p><img alt="Gymnasium version dependency" src="https://img.shields.io/badge/Gymnasium-v1.1.1-blue" />
+<img alt="GitHub stars" src="https://img.shields.io/github/stars/markov-labs/RL-Minesweeper" /></p>
+<p>This is a custom minesweeper gymnasium environment that allows for an optional custom mask for added complexity. Fully customizable with board size, mine density and custom masks.</p>
+</li>
 <li><p><a class="reference external" href="https://github.com/mikelma/craftium">Craftium: an extensible framework for creating RL environments</a></p>
 <p><img alt="Gymnasium version dependency" src="https://img.shields.io/badge/Gymnasium-v0.29.1-blue" />
 <img alt="GitHub stars" src="https://img.shields.io/github/stars/mikelma/craftium" /></p>
@@ -597,6 +597,11 @@ It is built on the <a class="reference external" href="https://github.com/bullet
 <img alt="GitHub stars" src="https://img.shields.io/github/stars/PKU-MARL/safety-gymnasium" /></p>
 <p>Highly scalable and customizable Safe Reinforcement Learning library.</p>
 </li>
+<li><p><a class="reference external" href="https://github.com/dfki-ric/deformable_gym">deformable_gym: RL environments for grasping deformable objects</a></p>
+<p>A collection of gymnasium environments for learning to grasp 3D deformable objects built with PyBullet and Mujoco.</p>
+<p><img alt="Gymnasium version dependency" src="https://img.shields.io/badge/Gymnasium-v1.0.0-blue" />
+<img alt="GitHub stars" src="https://img.shields.io/github/stars/dfki-ric/deformable_gym" /></p>
+</li>
 </ul>
 </section>
 <section id="telecommunication-systems-environments">
@@ -637,6 +642,12 @@ It is built on the <a class="reference external" href="https://github.com/bullet
 <p><img alt="Gymnasium version dependency" src="https://img.shields.io/badge/Gymnasium-v0.29.1-blue" />
 <img alt="GitHub stars" src="https://img.shields.io/github/stars/sparisi/gym_gridworlds" /></p>
 <p>The default class implements a “go-to goal”, but it can be easily customized for different tasks, with a variety of grids, rewards, dynamics, and tasks. It supports different observation types (discrete, coordinates, binary, pixels, partial). Useful for quickly testing and prototyping RL algorithms, both tabular and with function approximation.</p>
+</li>
+<li><p><a class="reference external" href="https://github.com/Daveonwave/gym4ReaL">Gym4ReaL</a></p>
+<p><img alt="Gymnasium version dependency" src="https://img.shields.io/badge/Gymnasium-v1.1.1-blue" />
+<img alt="GitHub stars" src="https://img.shields.io/github/stars/Daveonwave/gym4ReaL" /></p>
+<p>Gym4ReaL is a comprehensive suite of realistic environments designed to support the development and evaluation of RL algorithms that can operate in real-world scenarios.
+The suite includes a diverse set of tasks exposing RL algorithms to a variety of practical challenges, such as water management, energy management in microgrids, financial trading, and more.</p>
 </li>
 <li><p><a class="reference external" href="https://github.com/Paul-543NA/matrix-mdp-gym">matrix-mdp: Easily create discrete MDPs</a></p>
 <p><img alt="Gymnasium version dependency" src="https://img.shields.io/badge/Gymnasium-v0.26.2-blue" />
@@ -914,7 +925,7 @@ Many of these can be adapted to work with gymnasium (see <a class="reference ext
         })()
       </script>
 
-    <script src="../../_static/documentation_options.js?v=d8a3a229"></script>
+    <script src="../../_static/documentation_options.js?v=151cd43d"></script>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=7660844c"></script>
