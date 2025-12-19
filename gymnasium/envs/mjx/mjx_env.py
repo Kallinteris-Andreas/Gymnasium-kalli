@@ -3,7 +3,7 @@
 Note: This is expted to be used my `gymnasium`, `gymnasium-robotics`, `metaworld` and 3rd party libraries.
 """
 
-from typing import Dict, Tuple, Union
+from typing import Any, Dict, Tuple, Union
 
 import numpy as np
 
@@ -47,7 +47,6 @@ def mjx_set_physics_state(mjx_data: mjx.Data, mjx_physics_state) -> mjx.Data:
 """
 
 
-# TODO add type hint to `params`
 # TODO add render `metadata`
 # TODO add init_qvel
 # TODO create pip install gymnasium[mjx]
@@ -59,7 +58,7 @@ class MJXEnv(
         jnp.ndarray,
         bool,
         MujocoRenderer,
-        Dict[str, any],
+        Dict[str, Any],
     ]
 ):
     """The Base class for MJX Environments in Gymnasium.
@@ -67,7 +66,7 @@ class MJXEnv(
     `observation`, `terminal`, and `state_info` should be defined in sub-classes.
     """
 
-    def __init__(self, params: Dict[str, any]):
+    def __init__(self, params: Dict[str, Any]):
         """Create the `mjx.Model` of the robot defined in `params["xml_file"]`.
 
         Keep `mujoco.MjModel` of model for rendering purposes.
@@ -93,7 +92,7 @@ class MJXEnv(
         # TODO change bounds and types when and if `Box` supports JAX nativly
         # self.action_space = gymnasium.spaces.Box(low=self.mjx_model.actuator_ctrlrange.T[0], high=self.mjx_model.actuator_ctrlrange.T[1], dtype=np.float32)
 
-    def initial(self, rng: jax.random.PRNGKey, params: Dict[str, any]) -> mjx.Data:
+    def initial(self, rng: jax.random.PRNGKey, params: Dict[str, Any]) -> mjx.Data:
         """Initializes and returns the `mjx.Data`."""
         # TODO? find a more performant alternative that does not allocate?
         mjx_data = mjx.make_data(self.model)
@@ -108,7 +107,7 @@ class MJXEnv(
         state: mjx.Data,
         action: jnp.ndarray,
         rng: jax.random.PRNGKey,
-        params: Dict[str, any],
+        params: Dict[str, Any],
     ) -> mjx.Data:
         """Step through the simulator using `action` for `self.dt` (note: `rng` argument is ignored)."""
         mjx_data = state.replace(ctrl=action)
@@ -129,7 +128,7 @@ class MJXEnv(
         action: jnp.ndarray,
         next_state: mjx.Data,
         rng: jax.random.PRNGKey,
-        params: Dict[str, any],
+        params: Dict[str, Any],
     ) -> jnp.ndarray:
         """Returns the reward."""
         return self._get_reward(state, action, next_state, params)[0]
@@ -139,14 +138,14 @@ class MJXEnv(
         state: mjx.Data,
         action: jnp.ndarray,
         next_state: mjx.Data,
-        params: Dict[str, any],
+        params: Dict[str, Any],
     ) -> Dict:
         """Includes just reward info."""
         return self._get_reward(state, action, next_state, params)[1]
 
     def render_init(
         self,
-        params: Dict[str, any],
+        params: Dict[str, Any],
     ) -> MujocoRenderer:
         """Returns a `MujocoRenderer` object."""
         return MujocoRenderer(
@@ -164,7 +163,7 @@ class MJXEnv(
         self,
         state: mjx.Data,
         render_state: MujocoRenderer,
-        params: Dict[str, any],
+        params: Dict[str, Any],
     ) -> Tuple[MujocoRenderer, Union[np.ndarray, None]]:
         """Renders the `mujoco` frame of the environment by converting `mjx.Data` to `mujoco.MjData`.
 
@@ -183,19 +182,19 @@ class MJXEnv(
         return mujoco_renderer, frame
 
     def render_close(
-        self, render_state: MujocoRenderer, params: Dict[str, any]
+        self, render_state: MujocoRenderer, params: Dict[str, Any]
     ) -> None:
         """Closes the `MujocoRender` object."""
         mujoco_renderer = render_state
         if mujoco_renderer is not None:
             mujoco_renderer.close()
 
-    def dt(self, params: Dict[str, any]) -> float:
+    def dt(self, params: Dict[str, Any]) -> float:
         """Returns the duration between timesteps (`dt`)."""
         return self.mjx_model.opt.timestep * params["frame_skip"]
 
     def _gen_init_physics_state(
-        self, rng, params: Dict[str, any]
+        self, rng, params: Dict[str, Any]
     ) -> Tuple[jnp.ndarray, jnp.ndarray, jnp.ndarray]:
         """Generates the initial physics state.
 
@@ -210,7 +209,7 @@ class MJXEnv(
         state: mjx.Data,
         action: jnp.ndarray,
         next_state: mjx.Data,
-        params: Dict[str, any],
+        params: Dict[str, Any],
     ) -> Tuple[jnp.ndarray, Dict[str, float]]:
         """Generates `reward` and `transition_info`, we rely on the JIT's SEE to optimize it.
 
@@ -222,12 +221,12 @@ class MJXEnv(
         self,
         state: mjx.Data,
         rng: jax.random.PRNGKey,
-        params: Dict[str, any] | None = None,
+        params: Dict[str, Any] | None = None,
     ) -> jnp.ndarray:
         """Should be overwritten if the sub-class environment terminates."""
         return jnp.array(False)
 
-    def get_default_params(**kwargs) -> Dict[str, any]:
+    def get_default_params(**kwargs) -> Dict[str, Any]:
         """Generate the default parameters for rendering."""
         default = {
             "default_camera_config": {},
